@@ -1,59 +1,120 @@
 # CLAUDE.md
 
-This document serves as a shared guideline for all team members when using Claude Code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Tech Stack
 
-read @.cursor/rules/project-introduce.mdc
+- **Frontend**: Next.js 16, React 19, TypeScript — hybrid Next.js app router + SPA via `react-router-dom`
+- **UI**: `@lobehub/ui`, Ant Design, `antd-style` (CSS-in-JS via `createStyles`)
+- **State**: Zustand stores + SWR for server data fetching
+- **Backend**: tRPC (type-safe API), Next.js API routes
+- **Database**: PostgreSQL + PGLite (client-side), Drizzle ORM
+- **Testing**: Vitest + Testing Library (unit), Playwright + Cucumber (e2e)
+- **Monorepo**: pnpm workspaces; `bun` to run scripts, `bunx` for executables
 
-## Directory Structure
+## Commands
 
-read @.cursor/rules/project-structure.mdc
+```bash
+# Development
+bun run dev                  # Start dev server on :3010
+bun run dev:desktop          # Desktop (Electron) renderer on :3015
 
-## Development
+# Build
+bun run build                # Production build
+bun run build:docker         # Docker build
 
-### Git Workflow
+# Testing — NEVER run `bun run test` (runs all tests, ~10 min)
+bunx vitest run --silent='passed-only' '[file-path]'
+cd packages/database && bunx vitest run --silent='passed-only' '[file]'
 
-- use rebase for git pull
-- git commit message should prefix with gitmoji
-- git branch name format example: tj/feat/feature-name
-- use .github/PULL_REQUEST_TEMPLATE.md to generate pull request description
+# Type checking
+bun run type-check            # Uses tsgo (fast)
+bun run type-check:tsc        # Uses tsc (strict)
 
-### Package Management
+# Linting
+bun run lint                  # ts + style + type-check + circular deps
+bun run lint:ts               # ESLint only
+bun run lint:style            # Stylelint only
 
-This repository adopts a monorepo structure.
+# Database
+bun run db:generate           # Generate Drizzle migrations
+bun run db:migrate            # Run migrations
+bun run db:studio             # Open Drizzle Studio
+```
 
-- Use `pnpm` as the primary package manager for dependency management
-- Use `bun` to run npm scripts
-- Use `bunx` to run executable npm packages
+## Project Structure
 
-### TypeScript Code Style Guide
+```
+src/
+├── app/                  # Next.js App Router
+│   ├── (backend)/        # Server-only routes (API, tRPC endpoints)
+│   └── [variants]/       # Client SPA entry points
+├── features/             # Large self-contained UI feature areas
+│   └── Conversation/     # Core chat UI
+├── store/                # Zustand stores (one per domain)
+│   ├── chat/             # Messages, streaming, tools
+│   ├── session/          # Sessions/agents
+│   ├── agent/            # Agent config
+│   └── ...
+├── services/             # Client-side service layer (calls tRPC/API)
+├── server/
+│   ├── routers/          # tRPC routers
+│   │   ├── lambda/       # Synchronous routes
+│   │   ├── async/        # Async/streaming routes
+│   │   └── tools/        # Tool call routes
+│   └── services/         # Server-side service implementations
+├── locales/default/      # i18n source of truth (TypeScript)
+└── libs/                 # Shared utilities and abstractions
 
-see @.cursor/rules/typescript.mdc
+packages/
+├── database/             # Drizzle schemas, models, repositories (@lobechat/database)
+├── agent-runtime/        # LLM provider adapters
+├── model-runtime/        # Model definitions and capabilities
+└── ...                   # Other shared packages
+```
 
-### Testing
+## Architecture Patterns
 
-- **Required Rule**: read `@.cursor/rules/testing-guide/testing-guide.mdc` before writing tests
-- **Command**:
-  - web: `bunx vitest run --silent='passed-only' '[file-path-pattern]'`
-  - packages(eg: database): `cd packages/database && bunx vitest run --silent='passed-only' '[file-path-pattern]'`
+### Store Structure
+Every Zustand store follows a consistent layout:
+```
+store/<domain>/
+├── store.ts          # createWithEqualityFn, merges slices
+├── initialState.ts   # Full state type + default values
+├── selectors.ts      # Derived state selectors
+└── slices/           # Action groups (each slice = one concern)
+```
+Prefer `vi.spyOn` over `vi.mock` when testing stores.
 
-**Important**:
+### Data Flow
+`Component → useChatStore action → service (src/services/) → tRPC router → server service → DB`
 
-- wrap the file path in single quotes to avoid shell expansion
-- Never run `bun run test` etc to run tests, this will run all tests and cost about 10mins
-- If trying to fix the same test twice, but still failed, stop and ask for help.
+### tRPC Router Locations
+- `src/server/routers/lambda/` — standard request/response
+- `src/server/routers/async/` — long-running / queued operations
+- `src/server/routers/tools/` — agent tool calls
 
-### Typecheck
+### Path Alias
+`@/` resolves to `src/`. In tests, also: `@/database` → `packages/database/src`.
 
-- use `bun run type-check` to check type errors.
+### CSS-in-JS
+Use `createStyles` from `antd-style`. Avoid inline styles or plain CSS modules.
 
-### i18n
+## Git Workflow
 
-- **Keys**: Add to `src/locales/default/namespace.ts`
-- **Dev**: Translate `locales/zh-CN/namespace.json` and `locales/en-US/namespace.json` locales file only for dev preview
-- DON'T run `pnpm i18n`, let CI auto handle it
+- Commit messages must be prefixed with a gitmoji
+- Branch format: `<type>/<feature-name>`
+- Use `git pull --rebase`
+- PR titles with `✨ feat/` or `🐛 fix` trigger automated releases
 
-## Rules Index
+## i18n
 
-Some useful project rules are listed in @.cursor/rules/rules-index.mdc
+- Add new keys to `src/locales/default/<namespace>.ts` (TypeScript source of truth)
+- For dev preview only: also add to `locales/zh-CN/` and `locales/en-US/`
+- **Never run `pnpm i18n`** — CI handles all other locales automatically
+
+## Testing Notes
+
+- Wrap file paths in single quotes: `'src/store/chat/**'`
+- After 2 failed fix attempts on a test, stop and ask for help
+- Run `bun run type-check` after code changes — tests must also pass type checking
