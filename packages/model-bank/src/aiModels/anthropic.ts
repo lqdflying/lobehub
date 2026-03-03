@@ -11,7 +11,7 @@ const anthropicChatModels: AIChatModelCard[] = [
     },
     contextWindowTokens: 200_000,
     description:
-      'Claude Opus 4.6 是 Anthropic 最智能的旗舰模型，专为构建智能体和复杂编码任务设计，具备卓越的推理能力与自适应思考。',
+      "Claude Opus 4.6 is Anthropic's most intelligent flagship model, designed for building agents and complex coding tasks, with exceptional reasoning and adaptive thinking.",
     displayName: 'Claude Opus 4.6',
     enabled: true,
     id: 'claude-opus-4-6',
@@ -46,7 +46,7 @@ const anthropicChatModels: AIChatModelCard[] = [
     },
     contextWindowTokens: 200_000,
     description:
-      'Claude Sonnet 4.6 是 Anthropic 速度与智能的最佳结合，以与 Sonnet 4.5 相同的价格提供更强的推理与自适应思考能力。',
+      "Claude Sonnet 4.6 is the best balance of speed and intelligence from Anthropic, delivering stronger reasoning and adaptive thinking at the same price as Sonnet 4.5.",
     displayName: 'Claude Sonnet 4.6',
     enabled: true,
     id: 'claude-sonnet-4-6',
@@ -81,7 +81,7 @@ const anthropicChatModels: AIChatModelCard[] = [
     },
     contextWindowTokens: 200_000,
     description:
-      'Claude Opus 4.5 是 Anthropic 的旗舰智能模型，专为构建智能体和复杂编码任务设计，具备卓越的推理能力与自适应思考。',
+      "Claude Opus 4.5 is Anthropic's flagship intelligence model, designed for building agents and complex coding tasks, with exceptional reasoning and adaptive thinking.",
     displayName: 'Claude Opus 4.5',
     id: 'claude-opus-4-5-20251101',
     maxOutput: 128_000,
