@@ -26,6 +26,206 @@ export const openaiChatModels: AIChatModelCard[] = [
       vision: true,
     },
     contextWindowTokens: 400_000,
+    description: 'GPT-5.2 Pro 使用更多计算来更深入地思考，并持续提供更好的答案。',
+    displayName: 'GPT-5.2 Pro',
+    id: 'gpt-5.2-pro',
+    maxOutput: 272_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 1.75, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 14, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2026-01-15',
+    settings: {
+      extendParams: ['gpt5ReasoningEffort', 'textVerbosity'],
+      searchImpl: 'params',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      structuredOutput: true,
+      vision: true,
+    },
+    contextWindowTokens: 400_000,
+    description:
+      'GPT-5.2 在准确性、速度和推理方面实现了进一步提升，是跨领域编码和智能体任务的强大选择。',
+    displayName: 'GPT-5.2',
+    enabled: true,
+    id: 'gpt-5.2',
+    maxOutput: 128_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 1.75, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 14, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.175, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2026-01-15',
+    settings: {
+      extendParams: ['gpt5ReasoningEffort', 'textVerbosity'],
+      searchImpl: 'params',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      vision: true,
+    },
+    contextWindowTokens: 400_000,
+    description: 'ChatGPT 中使用的 GPT-5.2 模型，结合了强大的语言理解与生成能力。',
+    displayName: 'GPT-5.2 Chat',
+    enabled: true,
+    id: 'gpt-5.2-chat-latest',
+    maxOutput: 128_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 1.75, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 14, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.175, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2026-01-15',
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      vision: true,
+    },
+    contextWindowTokens: 400_000,
+    description: 'GPT-5.2 Codex 是针对智能体编码任务优化的 GPT-5.2 版本。',
+    displayName: 'GPT-5.2 Codex',
+    id: 'gpt-5.2-codex',
+    maxOutput: 128_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 1.75, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 14, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.175, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2026-01-15',
+    settings: {
+      extendParams: ['gpt5ReasoningEffort', 'textVerbosity'],
+      searchImpl: 'params',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      vision: true,
+    },
+    contextWindowTokens: 400_000,
+    description: 'GPT-5.3 Codex 是最新一代针对智能体编码任务优化的模型。',
+    displayName: 'GPT-5.3 Codex',
+    id: 'gpt-5.3-codex',
+    maxOutput: 128_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 1.75, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 14, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.175, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2026-02-15',
+    settings: {
+      extendParams: ['gpt5ReasoningEffort', 'textVerbosity'],
+      searchImpl: 'params',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      structuredOutput: true,
+      vision: true,
+    },
+    contextWindowTokens: 400_000,
+    description:
+      'GPT-5.1 在 GPT-5 的基础上改进了准确性和推理能力，是跨领域任务的优选模型。',
+    displayName: 'GPT-5.1',
+    enabled: true,
+    id: 'gpt-5.1',
+    maxOutput: 128_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 1.25, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 10, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.125, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2025-11-14',
+    settings: {
+      extendParams: ['gpt5ReasoningEffort', 'textVerbosity'],
+      searchImpl: 'params',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      vision: true,
+    },
+    contextWindowTokens: 400_000,
+    description: 'ChatGPT 中使用的 GPT-5.1 模型，结合了强大的语言理解与生成能力。',
+    displayName: 'GPT-5.1 Chat',
+    id: 'gpt-5.1-chat-latest',
+    maxOutput: 128_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 1.25, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 10, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.125, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2025-11-14',
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      vision: true,
+    },
+    contextWindowTokens: 400_000,
+    description: 'GPT-5.1 Codex 是针对智能体编码任务优化的 GPT-5.1 版本。',
+    displayName: 'GPT-5.1 Codex',
+    id: 'gpt-5.1-codex',
+    maxOutput: 128_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 1.25, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 10, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.125, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2025-11-14',
+    settings: {
+      extendParams: ['gpt5ReasoningEffort', 'textVerbosity'],
+      searchImpl: 'params',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      vision: true,
+    },
+    contextWindowTokens: 400_000,
     description: 'GPT-5 pro 使用更多计算来更深入地思考，并持续提供更好的答案。',
     displayName: 'GPT-5 pro',
     id: 'gpt-5-pro',
@@ -617,6 +817,47 @@ export const openaiChatModels: AIChatModelCard[] = [
     },
     contextWindowTokens: 128_000,
     description:
+      'GPT Audio 1.5 是面向音频输入输出的新一代通用聊天模型，支持在 Chat Completions API 中使用音频 I/O。',
+    displayName: 'GPT Audio 1.5',
+    id: 'gpt-audio-1.5',
+    maxOutput: 16_384,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 4, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 16, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'audioInput', rate: 32, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'audioOutput', rate: 64, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.4, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2026-01-15',
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+    },
+    contextWindowTokens: 128_000,
+    description:
+      'GPT Audio Mini 是轻量级音频对话模型，支持文本与音频的低成本实时输入输出。',
+    displayName: 'GPT Audio Mini',
+    id: 'gpt-audio-mini',
+    maxOutput: 16_384,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 0.6, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 2.4, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2025-11-14',
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+    },
+    contextWindowTokens: 128_000,
+    description:
       'GPT Audio 是面向音频输入输出的通用聊天模型，支持在 Chat Completions API 中使用音频 I/O。',
     displayName: 'GPT Audio',
     id: 'gpt-audio',
@@ -1059,6 +1300,39 @@ export const openaiSTTModels: AISTTModelCard[] = [
 
 // 图像生成模型
 export const openaiImageModels: AIImageModelCard[] = [
+  {
+    description: 'ChatGPT 原生多模态图片生成模型增强版，提供更高的图像质量和细节表现力。',
+    displayName: 'GPT Image 1.5',
+    enabled: true,
+    id: 'gpt-image-1.5',
+    parameters: gptImage1ParamsSchema,
+    pricing: {
+      units: [
+        {
+          lookup: {
+            prices: {
+              high_1024x1024: 0.17,
+              high_1024x1536: 0.25,
+              high_1536x1024: 0.25,
+              low_1024x1024: 0.01,
+              low_1024x1536: 0.015,
+              low_1536x1024: 0.015,
+              medium_1024x1024: 0.04,
+              medium_1024x1536: 0.06,
+              medium_1536x1024: 0.06,
+            },
+            pricingParams: ['quality', 'size'],
+          },
+          name: 'imageGeneration',
+          strategy: 'lookup',
+          unit: 'image',
+        },
+      ],
+    },
+    releasedAt: '2026-02-01',
+    resolutions: ['1024x1024', '1024x1536', '1536x1024'],
+    type: 'image',
+  },
   // https://platform.openai.com/docs/models/gpt-image-1
   {
     description: 'ChatGPT 原生多模态图片生成模型',
@@ -1232,6 +1506,50 @@ export const openaiRealtimeModels: AIRealtimeModelCard[] = [
       ],
     },
     releasedAt: '2025-08-28',
+    type: 'realtime',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      vision: true,
+    },
+    contextWindowTokens: 32_000,
+    description: '新一代通用实时模型，支持文本与音频的实时输入输出，并支持图像输入。',
+    displayName: 'GPT Realtime 1.5',
+    id: 'gpt-realtime-1.5',
+    maxOutput: 4096,
+    pricing: {
+      units: [
+        { name: 'audioInput', rate: 32, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'audioOutput', rate: 64, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'audioInput_cacheRead', rate: 0.4, strategy: 'fixed', unit: 'millionTokens' },
+
+        { name: 'textInput', rate: 4, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 16, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.4, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2026-01-15',
+    type: 'realtime',
+  },
+  {
+    contextWindowTokens: 128_000,
+    description: '轻量级实时模型，支持音频和文本的低成本实时输入输出。',
+    displayName: 'GPT Realtime Mini',
+    id: 'gpt-realtime-mini',
+    maxOutput: 4096,
+    pricing: {
+      units: [
+        { name: 'audioInput', rate: 10, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'audioOutput', rate: 20, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'audioInput_cacheRead', rate: 0.06, strategy: 'fixed', unit: 'millionTokens' },
+
+        { name: 'textInput', rate: 0.6, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 2.4, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.06, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2025-11-14',
     type: 'realtime',
   },
   {

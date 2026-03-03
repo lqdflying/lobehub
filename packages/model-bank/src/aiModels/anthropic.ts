@@ -10,6 +10,110 @@ const anthropicChatModels: AIChatModelCard[] = [
       vision: true,
     },
     contextWindowTokens: 200_000,
+    description:
+      'Claude Opus 4.6 是 Anthropic 最智能的旗舰模型，专为构建智能体和复杂编码任务设计，具备卓越的推理能力与自适应思考。',
+    displayName: 'Claude Opus 4.6',
+    enabled: true,
+    id: 'claude-opus-4-6',
+    maxOutput: 128_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 5, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 25, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.5, strategy: 'fixed', unit: 'millionTokens' },
+        {
+          lookup: { prices: { '1h': 10, '5m': 6.25 }, pricingParams: ['ttl'] },
+          name: 'textInput_cacheWrite',
+          strategy: 'lookup',
+          unit: 'millionTokens',
+        },
+      ],
+    },
+    releasedAt: '2026-02-05',
+    settings: {
+      extendParams: ['disableContextCaching', 'enableReasoning', 'reasoningBudgetToken'],
+      searchImpl: 'params',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      structuredOutput: true,
+      vision: true,
+    },
+    contextWindowTokens: 200_000,
+    description:
+      'Claude Sonnet 4.6 是 Anthropic 速度与智能的最佳结合，以与 Sonnet 4.5 相同的价格提供更强的推理与自适应思考能力。',
+    displayName: 'Claude Sonnet 4.6',
+    enabled: true,
+    id: 'claude-sonnet-4-6',
+    maxOutput: 64_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 3, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 15, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.3, strategy: 'fixed', unit: 'millionTokens' },
+        {
+          lookup: { prices: { '1h': 6, '5m': 3.75 }, pricingParams: ['ttl'] },
+          name: 'textInput_cacheWrite',
+          strategy: 'lookup',
+          unit: 'millionTokens',
+        },
+      ],
+    },
+    releasedAt: '2026-02-17',
+    settings: {
+      extendParams: ['disableContextCaching', 'enableReasoning', 'reasoningBudgetToken'],
+      searchImpl: 'params',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      structuredOutput: true,
+      vision: true,
+    },
+    contextWindowTokens: 200_000,
+    description:
+      'Claude Opus 4.5 是 Anthropic 的旗舰智能模型，专为构建智能体和复杂编码任务设计，具备卓越的推理能力与自适应思考。',
+    displayName: 'Claude Opus 4.5',
+    id: 'claude-opus-4-5-20251101',
+    maxOutput: 128_000,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 5, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 25, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textInput_cacheRead', rate: 0.5, strategy: 'fixed', unit: 'millionTokens' },
+        {
+          lookup: { prices: { '1h': 10, '5m': 6.25 }, pricingParams: ['ttl'] },
+          name: 'textInput_cacheWrite',
+          strategy: 'lookup',
+          unit: 'millionTokens',
+        },
+      ],
+    },
+    releasedAt: '2025-11-01',
+    settings: {
+      extendParams: ['disableContextCaching', 'enableReasoning', 'reasoningBudgetToken'],
+      searchImpl: 'params',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      structuredOutput: true,
+      vision: true,
+    },
+    contextWindowTokens: 200_000,
     description: 'Claude Sonnet 4.5 是 Anthropic 迄今为止最智能的模型。',
     displayName: 'Claude Sonnet 4.5',
     enabled: true,

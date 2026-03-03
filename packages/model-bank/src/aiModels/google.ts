@@ -17,6 +17,124 @@ const googleChatModels: AIChatModelCard[] = [
       vision: true,
     },
     contextWindowTokens: 1_048_576 + 65_536,
+    description:
+      'Gemini 3.1 Pro 是 Google 最先进的思维模型，具备强大的推理和多模态能力，在代码、数学和 STEM 领域表现卓越。',
+    displayName: 'Gemini 3.1 Pro Preview',
+    enabled: true,
+    id: 'gemini-3.1-pro-preview',
+    maxOutput: 65_536,
+    pricing: {
+      units: [
+        {
+          name: 'textInput',
+          strategy: 'tiered',
+          tiers: [
+            { rate: 2, upTo: 200_000 },
+            { rate: 4, upTo: 'infinity' },
+          ],
+          unit: 'millionTokens',
+        },
+        {
+          name: 'textOutput',
+          strategy: 'tiered',
+          tiers: [
+            { rate: 12, upTo: 200_000 },
+            { rate: 18, upTo: 'infinity' },
+          ],
+          unit: 'millionTokens',
+        },
+      ],
+    },
+    releasedAt: '2026-02-19',
+    settings: {
+      extendParams: ['thinkingBudget', 'urlContext'],
+      searchImpl: 'params',
+      searchProvider: 'google',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      video: true,
+      vision: true,
+    },
+    contextWindowTokens: 1_048_576 + 65_536,
+    description: 'Gemini 3 Flash 是 Google 高效能的下一代模型，提供卓越的速度与性价比。',
+    displayName: 'Gemini 3 Flash Preview',
+    enabled: true,
+    id: 'gemini-3-flash-preview',
+    maxOutput: 65_536,
+    pricing: {
+      units: [
+        { name: 'textInput', rate: 0.5, strategy: 'fixed', unit: 'millionTokens' },
+        { name: 'textOutput', rate: 3, strategy: 'fixed', unit: 'millionTokens' },
+      ],
+    },
+    releasedAt: '2025-12-17',
+    settings: {
+      extendParams: ['thinkingBudget', 'urlContext'],
+      searchImpl: 'params',
+      searchProvider: 'google',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      structuredOutput: true,
+      video: true,
+      vision: true,
+    },
+    contextWindowTokens: 1_048_576 + 65_536,
+    description: 'Gemini 3 Pro 是 Google 的高性能下一代模型，在多个领域提供强大的推理和生成能力。',
+    displayName: 'Gemini 3 Pro Preview',
+    id: 'gemini-3-pro-preview',
+    maxOutput: 65_536,
+    pricing: {
+      units: [
+        {
+          name: 'textInput',
+          strategy: 'tiered',
+          tiers: [
+            { rate: 2, upTo: 200_000 },
+            { rate: 4, upTo: 'infinity' },
+          ],
+          unit: 'millionTokens',
+        },
+        {
+          name: 'textOutput',
+          strategy: 'tiered',
+          tiers: [
+            { rate: 12, upTo: 200_000 },
+            { rate: 18, upTo: 'infinity' },
+          ],
+          unit: 'millionTokens',
+        },
+      ],
+    },
+    releasedAt: '2025-12-17',
+    settings: {
+      extendParams: ['thinkingBudget', 'urlContext'],
+      searchImpl: 'params',
+      searchProvider: 'google',
+    },
+    type: 'chat',
+  },
+  {
+    abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      structuredOutput: true,
+      video: true,
+      vision: true,
+    },
+    contextWindowTokens: 1_048_576 + 65_536,
     description: 'Latest release of Gemini Pro',
     displayName: 'Gemini Pro Latest',
     id: 'gemini-pro-latest',
