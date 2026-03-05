@@ -214,7 +214,7 @@ export class AiInfraRepos {
 
             const mergedModel = {
               ...item,
-              abilities: !isEmpty(user.abilities) ? user.abilities : item.abilities || {},
+              abilities: merge(item.abilities || {}, !isEmpty(user.abilities) ? user.abilities : {}),
               config: !isEmpty(user.config) ? user.config : item.config,
               contextWindowTokens:
                 typeof user.contextWindowTokens === 'number'
