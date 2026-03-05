@@ -58,12 +58,13 @@ export const convertOpenAIMessages = async (messages: OpenAI.ChatCompletionMessa
 };
 
 export const convertOpenAIResponseInputs = async (messages: OpenAIChatMessage[]) => {
-  let input: OpenAI.Responses.ResponseInputItem[] = [];
-  await Promise.all(
-    messages.map(async (message) => {
-      // if message has reasoning, add it as a separate reasoning item
+  const groups = await Promise.all(
+    messages.map(async (message): Promise<OpenAI.Responses.ResponseInputItem[]> => {
+      const items: OpenAI.Responses.ResponseInputItem[] = [];
+
+      // if message has reasoning, prepend it as a separate reasoning item
       if (message.reasoning?.content) {
-        input.push({
+        items.push({
           summary: [{ text: message.reasoning.content, type: 'summary_text' }],
           type: 'reasoning',
         } as OpenAI.Responses.ResponseReasoningItem);
@@ -72,7 +73,7 @@ export const convertOpenAIResponseInputs = async (messages: OpenAIChatMessage[])
       // if message is assistant messages with tool calls , transform it to function type item
       if (message.role === 'assistant' && message.tool_calls && message.tool_calls?.length > 0) {
         message.tool_calls?.forEach((tool) => {
-          input.push({
+          items.push({
             arguments: tool.function.name,
             call_id: tool.id,
             name: tool.function.name,
@@ -80,26 +81,42 @@ export const convertOpenAIResponseInputs = async (messages: OpenAIChatMessage[])
           });
         });
 
-        return;
+        return items;
       }
 
       if (message.role === 'tool') {
-        input.push({
+        items.push({
           call_id: message.tool_call_id,
           output: message.content,
           type: 'function_call_output',
         } as OpenAI.Responses.ResponseFunctionToolCallOutputItem);
 
-        return;
+        return items;
       }
 
       if (message.role === 'system') {
-        input.push({ ...message, role: 'developer' } as OpenAI.Responses.ResponseInputItem);
-        return;
+        items.push({ ...message, role: 'developer' } as OpenAI.Responses.ResponseInputItem);
+        return items;
       }
 
-      // default item
-      // also need handle image
+      // assistant messages without tool_calls: content must be output_text/refusal only
+      if (message.role === 'assistant') {
+        const item = {
+          ...message,
+          content:
+            typeof message.content === 'string'
+              ? message.content
+              : (message.content || [])
+                  .filter((c) => c.type === 'text')
+                  .map((c) => ({ text: (c as OpenAI.ChatCompletionContentPartText).text, type: 'output_text' as const })),
+        } as OpenAI.Responses.ResponseInputItem;
+
+        delete (item as any).reasoning;
+        items.push(item);
+        return items;
+      }
+
+      // default item (user messages), also handle images
       const item = {
         ...message,
         content:
@@ -123,11 +140,12 @@ export const convertOpenAIResponseInputs = async (messages: OpenAIChatMessage[])
       // remove reasoning field from the message item
       delete (item as any).reasoning;
 
-      input.push(item);
+      items.push(item);
+      return items;
     }),
   );
 
-  return input;
+  return groups.flat();
 };
 
 export const pruneReasoningPayload = (payload: ChatStreamPayload) => {
