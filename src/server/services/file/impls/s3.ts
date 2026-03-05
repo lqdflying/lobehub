@@ -50,16 +50,22 @@ export class S3StaticFileImpl implements FileServiceImpl {
     // Handle legacy data compatibility using shared utility
     const key = extractKeyFromUrlOrReturnOriginal(url, this.getKeyFromFullUrl.bind(this));
 
+    // If S3_PUBLIC_DOMAIN is set, always use it to construct the URL.
+    // This supports setups where the bucket is served via a custom domain
+    // (e.g. Cloudflare R2 custom domain) without per-object ACLs.
+    if (fileEnv.S3_PUBLIC_DOMAIN) {
+      if (fileEnv.S3_ENABLE_PATH_STYLE) {
+        return urlJoin(fileEnv.S3_PUBLIC_DOMAIN, fileEnv.S3_BUCKET!, key);
+      }
+      return urlJoin(fileEnv.S3_PUBLIC_DOMAIN, key);
+    }
+
     // If bucket is not set public read, the preview address needs to be regenerated each time
     if (!fileEnv.S3_SET_ACL) {
       return await this.createPreSignedUrlForPreview(key, expiresIn);
     }
 
-    if (fileEnv.S3_ENABLE_PATH_STYLE) {
-      return urlJoin(fileEnv.S3_PUBLIC_DOMAIN!, fileEnv.S3_BUCKET!, key);
-    }
-
-    return urlJoin(fileEnv.S3_PUBLIC_DOMAIN!, key);
+    return urlJoin(fileEnv.S3_ENDPOINT!, fileEnv.S3_BUCKET!, key);
   }
 
   getKeyFromFullUrl(url: string): string {
