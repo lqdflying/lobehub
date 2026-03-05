@@ -1,7 +1,12 @@
 import analyzer from '@next/bundle-analyzer';
 import withSerwistInit from '@serwist/next';
 import type { NextConfig } from 'next';
+import { createRequire } from 'node:module';
 import ReactComponentName from 'react-scan/react-component-name/webpack';
+import webpack from 'webpack';
+
+const require = createRequire(import.meta.url);
+const pkg = require('./package.json') as { version: string };
 
 const isProd = process.env.NODE_ENV === 'production';
 const buildWithDocker = process.env.DOCKER === 'true';
@@ -279,6 +284,12 @@ const nextConfig: NextConfig = {
   },
 
   webpack(config) {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __VERSION__: JSON.stringify(pkg.version),
+      }),
+    );
+
     config.experiments = {
       asyncWebAssembly: true,
       layers: true,
