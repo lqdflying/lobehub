@@ -70,7 +70,7 @@ export const messageRouter = router({
     .input(z.object({}).passthrough().partial())
     .mutation(async ({ input, ctx }) => {
       return ctx.messageModel.createNewMessage(input as any, {
-        postProcessUrl: (path) => ctx.fileService.getFullFileUrl(path),
+        postProcessUrl: (path) => ctx.fileService.getUIFileUrl(path),
       });
     }),
 
@@ -113,7 +113,7 @@ export const messageRouter = router({
       const fileService = new FileService(serverDB, ctx.userId);
 
       return messageModel.query(input, {
-        postProcessUrl: (path) => fileService.getFullFileUrl(path),
+        postProcessUrl: (path) => fileService.getUIFileUrl(path),
       });
     }),
 

@@ -50,7 +50,7 @@ export const fileRouter = router({
         !isExist,
       );
 
-      return { id, url: await ctx.fileService.getFullFileUrl(input.url) };
+      return { id, url: await ctx.fileService.getUIFileUrl(input.url) };
     }),
   findById: fileProcedure
     .input(
@@ -62,7 +62,7 @@ export const fileRouter = router({
       const item = await ctx.fileModel.findById(input.id);
       if (!item) throw new TRPCError({ code: 'BAD_REQUEST', message: 'File not found' });
 
-      return { ...item, url: await ctx.fileService.getFullFileUrl(item?.url) };
+      return { ...item, url: await ctx.fileService.getUIFileUrl(item?.url) };
     }),
 
   getFileItemById: fileProcedure
@@ -95,7 +95,7 @@ export const fileRouter = router({
         embeddingError: embeddingTask?.error,
         embeddingStatus: embeddingTask?.status as AsyncTaskStatus,
         finishEmbedding: embeddingTask?.status === AsyncTaskStatus.Success,
-        url: await ctx.fileService.getFullFileUrl(item.url!),
+        url: await ctx.fileService.getUIFileUrl(item.url!),
       };
     }),
 
@@ -132,7 +132,7 @@ export const fileRouter = router({
         embeddingError: embeddingTask?.error ?? null,
         embeddingStatus: embeddingTask?.status as AsyncTaskStatus,
         finishEmbedding: embeddingTask?.status === AsyncTaskStatus.Success,
-        url: await ctx.fileService.getFullFileUrl(item.url!),
+        url: await ctx.fileService.getUIFileUrl(item.url!),
       } as FileListItem;
       resultFiles.push(fileItem);
     }
