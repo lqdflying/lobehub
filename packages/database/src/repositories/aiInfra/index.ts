@@ -212,15 +212,9 @@ export class AiInfraRepos {
                 providerId: provider.id,
               };
 
-            const mergedAbilities = merge(item.abilities || {}, !isEmpty(user.abilities) ? user.abilities : {});
-            // Builtin search:true must not be overridden by a stale DB search:false
-            if (item.abilities?.search === true && mergedAbilities.search === false) {
-              mergedAbilities.search = true;
-            }
-
             const mergedModel = {
               ...item,
-              abilities: mergedAbilities,
+              abilities: merge(item.abilities || {}, !isEmpty(user.abilities) ? user.abilities : {}),
               config: !isEmpty(user.config) ? user.config : item.config,
               contextWindowTokens:
                 typeof user.contextWindowTokens === 'number'
@@ -292,18 +286,7 @@ export class AiInfraRepos {
     // 这里不修改搜索设置不影响使用，但是为了get数据统一
     const mergedModel = mergeArrayById(defaultModels, aiModels) as AiProviderModelListItem[];
 
-    // If the model-bank explicitly defines search: true for a builtin model,
-    // that takes precedence over a stale auto-detected search: false stored in DB.
-    const defaultModelAbilitiesMap = new Map(defaultModels.map((m) => [m.id, m.abilities]));
-    const correctedModels = mergedModel.map((m) => {
-      const builtinAbilities = defaultModelAbilitiesMap.get(m.id);
-      if (builtinAbilities?.search === true && m.abilities?.search === false) {
-        return { ...m, abilities: { ...m.abilities, search: true } };
-      }
-      return m;
-    });
-
-    return correctedModels.map((m) => injectSearchSettings(providerId, m));
+    return mergedModel.map((m) => injectSearchSettings(providerId, m));
   };
 
   /**
