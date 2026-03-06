@@ -150,7 +150,7 @@ export const convertOpenAIResponseInputs = async (messages: OpenAIChatMessage[])
 
 export const pruneReasoningPayload = (payload: ChatStreamPayload) => {
   const shouldStream = !disableStreamModels.has(payload.model);
-  const { stream_options, ...cleanedPayload } = payload as any;
+  const { stream_options, top_p, ...cleanedPayload } = payload as any;
 
   return {
     ...cleanedPayload,
@@ -169,7 +169,8 @@ export const pruneReasoningPayload = (payload: ChatStreamPayload) => {
     // Only include stream_options when stream is enabled
     ...(shouldStream && stream_options && { stream_options }),
     temperature: 1,
-    top_p: 1,
+    // top_p is stripped: not sending it uses the API default (1), and avoids
+    // errors on models (e.g. gpt-5.x) that reject top_p entirely
   };
 };
 
