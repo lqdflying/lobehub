@@ -286,7 +286,18 @@ export class AiInfraRepos {
     // 这里不修改搜索设置不影响使用，但是为了get数据统一
     const mergedModel = mergeArrayById(defaultModels, aiModels) as AiProviderModelListItem[];
 
-    return mergedModel.map((m) => injectSearchSettings(providerId, m));
+    // If the model-bank explicitly defines search: true for a builtin model,
+    // that takes precedence over a stale auto-detected search: false stored in DB.
+    const defaultModelAbilitiesMap = new Map(defaultModels.map((m) => [m.id, m.abilities]));
+    const correctedModels = mergedModel.map((m) => {
+      const builtinAbilities = defaultModelAbilitiesMap.get(m.id);
+      if (builtinAbilities?.search === true && m.abilities?.search === false) {
+        return { ...m, abilities: { ...m.abilities, search: true } };
+      }
+      return m;
+    });
+
+    return correctedModels.map((m) => injectSearchSettings(providerId, m));
   };
 
   /**
