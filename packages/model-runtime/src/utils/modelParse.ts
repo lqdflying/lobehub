@@ -21,6 +21,7 @@ export const MODEL_LIST_CONFIGS = {
   anthropic: {
     functionCallKeywords: ['claude'],
     reasoningKeywords: ['-3-7', '3.7', '-4'],
+    searchKeywords: ['claude-3-7', '-4'],
     visionKeywords: ['claude'],
   },
   comfyui: {
