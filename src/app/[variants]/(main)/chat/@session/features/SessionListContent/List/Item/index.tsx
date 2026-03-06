@@ -5,7 +5,6 @@ import { shallow } from 'zustand/shallow';
 
 import { DEFAULT_AVATAR } from '@/const/meta';
 import { isDesktop } from '@/const/version';
-import { useAgentStore } from '@/store/agent';
 import { useChatStore } from '@/store/chat';
 import { chatSelectors } from '@/store/chat/selectors';
 import { useGlobalStore } from '@/store/global';
@@ -14,7 +13,7 @@ import { sessionHelpers } from '@/store/session/helpers';
 import { sessionMetaSelectors, sessionSelectors } from '@/store/session/selectors';
 import { useUserStore } from '@/store/user';
 import { userProfileSelectors } from '@/store/user/selectors';
-import { LobeGroupSession } from '@/types/session';
+import { LobeAgentSession, LobeGroupSession } from '@/types/session';
 
 import ListItem from '../../ListItem';
 import CreateGroupModal from '../../Modals/CreateGroupModal';
@@ -32,7 +31,7 @@ const SessionItem = memo<SessionItemProps>(({ id }) => {
   const [active] = useSessionStore((s) => [s.activeId === id]);
   const [loading] = useChatStore((s) => [chatSelectors.isAIGenerating(s) && id === s.activeId]);
 
-  const [pin, title, avatar, avatarBackground, updateAt, members, group, sessionType] =
+  const [pin, title, avatar, avatarBackground, updateAt, members, group, sessionType, model] =
     useSessionStore((s) => {
       const session = sessionSelectors.getSessionById(id)(s);
       const meta = session.meta;
@@ -46,12 +45,9 @@ const SessionItem = memo<SessionItemProps>(({ id }) => {
         (session as LobeGroupSession).members,
         session?.group,
         session.type,
+        (session as LobeAgentSession).model,
       ];
     });
-
-  const model = useAgentStore((s) =>
-    sessionType === 'agent' ? s.agentMap[id]?.model : undefined,
-  );
 
   const showModel = sessionType === 'agent' && !!model;
 
