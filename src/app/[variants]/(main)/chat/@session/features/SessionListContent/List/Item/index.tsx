@@ -35,7 +35,7 @@ const SessionItem = memo<SessionItemProps>(({ id }) => {
   const [active] = useSessionStore((s) => [s.activeId === id]);
   const [loading] = useChatStore((s) => [chatSelectors.isAIGenerating(s) && id === s.activeId]);
 
-  const [pin, title, avatar, avatarBackground, updateAt, members, model, group, sessionType] =
+  const [pin, title, avatar, avatarBackground, updateAt, members, group, sessionType] =
     useSessionStore((s) => {
       const session = sessionSelectors.getSessionById(id)(s);
       const meta = session.meta;
@@ -47,11 +47,14 @@ const SessionItem = memo<SessionItemProps>(({ id }) => {
         meta.backgroundColor,
         session?.updatedAt,
         (session as LobeGroupSession).members,
-        session.type === 'agent' ? (session as any).model : undefined,
         session?.group,
         session.type,
       ];
     });
+
+  const model = useAgentStore((s) =>
+    sessionType === 'agent' ? agentSelectors.getAgentConfigById(id)(s).model : undefined,
+  );
 
   const showModel = sessionType === 'agent' && model && model !== defaultModel;
 
