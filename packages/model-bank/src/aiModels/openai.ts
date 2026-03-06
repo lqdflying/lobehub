@@ -56,10 +56,10 @@ export const openaiChatModels: AIChatModelCard[] = [
       vision: true,
     },
     contextWindowTokens: 400_000,
-    description: 'The GPT-5.4 model used in ChatGPT, combining state-of-the-art language understanding and generation capabilities.',
-    displayName: 'GPT-5.4 Chat',
+    description: 'GPT-5.4 Pro is the premium tier of GPT-5.4, offering enhanced performance for complex reasoning, coding, and multimodal tasks.',
+    displayName: 'GPT-5.4 Pro',
     enabled: true,
-    id: 'gpt-5.4-chat-latest',
+    id: 'gpt-5.4-pro',
     maxOutput: 128_000,
     pricing: {
       units: [
@@ -68,31 +68,7 @@ export const openaiChatModels: AIChatModelCard[] = [
         { name: 'textInput_cacheRead', rate: 0.2, strategy: 'fixed', unit: 'millionTokens' },
       ],
     },
-    releasedAt: '2026-03-01',
-    type: 'chat',
-  },
-  {
-    abilities: {
-      functionCall: true,
-      reasoning: true,
-      search: true,
-      structuredOutput: true,
-      vision: true,
-    },
-    contextWindowTokens: 400_000,
-    description: 'GPT-5.4 Codex is a version of GPT-5.4 optimized for agentic coding tasks.',
-    displayName: 'GPT-5.4 Codex',
-    enabled: true,
-    id: 'gpt-5.4-codex',
-    maxOutput: 128_000,
-    pricing: {
-      units: [
-        { name: 'textInput', rate: 2, strategy: 'fixed', unit: 'millionTokens' },
-        { name: 'textOutput', rate: 16, strategy: 'fixed', unit: 'millionTokens' },
-        { name: 'textInput_cacheRead', rate: 0.2, strategy: 'fixed', unit: 'millionTokens' },
-      ],
-    },
-    releasedAt: '2026-03-01',
+    releasedAt: '2026-03-05',
     settings: {
       extendParams: ['gpt5ReasoningEffort', 'textVerbosity'],
       searchImpl: 'params',
