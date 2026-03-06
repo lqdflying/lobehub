@@ -49,6 +49,10 @@ export const openaiChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      functionCall: true,
+      reasoning: true,
+      search: true,
+      structuredOutput: true,
       vision: true,
     },
     contextWindowTokens: 400_000,
@@ -72,11 +76,13 @@ export const openaiChatModels: AIChatModelCard[] = [
       functionCall: true,
       reasoning: true,
       search: true,
+      structuredOutput: true,
       vision: true,
     },
     contextWindowTokens: 400_000,
     description: 'GPT-5.4 Codex is a version of GPT-5.4 optimized for agentic coding tasks.',
     displayName: 'GPT-5.4 Codex',
+    enabled: true,
     id: 'gpt-5.4-codex',
     maxOutput: 128_000,
     pricing: {
