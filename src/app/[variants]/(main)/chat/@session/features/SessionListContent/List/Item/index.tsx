@@ -6,7 +6,6 @@ import { shallow } from 'zustand/shallow';
 import { DEFAULT_AVATAR } from '@/const/meta';
 import { isDesktop } from '@/const/version';
 import { useAgentStore } from '@/store/agent';
-import { agentSelectors } from '@/store/agent/selectors';
 import { useChatStore } from '@/store/chat';
 import { chatSelectors } from '@/store/chat/selectors';
 import { useGlobalStore } from '@/store/global';
@@ -28,8 +27,6 @@ interface SessionItemProps {
 const SessionItem = memo<SessionItemProps>(({ id }) => {
   const [open, setOpen] = useState(false);
   const [createGroupModalOpen, setCreateGroupModalOpen] = useState(false);
-  const [defaultModel] = useAgentStore((s) => [agentSelectors.inboxAgentModel(s)]);
-
   const openSessionInNewWindow = useGlobalStore((s) => s.openSessionInNewWindow);
 
   const [active] = useSessionStore((s) => [s.activeId === id]);
@@ -53,10 +50,10 @@ const SessionItem = memo<SessionItemProps>(({ id }) => {
     });
 
   const model = useAgentStore((s) =>
-    sessionType === 'agent' ? agentSelectors.getAgentConfigById(id)(s).model : undefined,
+    sessionType === 'agent' ? s.agentMap[id]?.model : undefined,
   );
 
-  const showModel = sessionType === 'agent' && model && model !== defaultModel;
+  const showModel = sessionType === 'agent' && !!model;
 
   const handleDoubleClick = () => {
     if (isDesktop) {
