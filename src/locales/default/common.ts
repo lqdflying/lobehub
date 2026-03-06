@@ -28,6 +28,7 @@ export default {
   autoGenerate: '自动补全',
   autoGenerateTooltip: '基于角色设定自动补全助手描述',
   autoGenerateTooltipDisabled: '请填写角色设定后使用自动补全功能',
+  uploadAvatar: 'Upload Avatar',
   back: '返回',
   batchDelete: '批量删除',
   blog: '产品博客',

@@ -1,13 +1,16 @@
 import { ActionIcon } from '@lobehub/ui';
+import { Upload } from 'antd';
 import { useTheme } from 'antd-style';
-import { Wand2 } from 'lucide-react';
+import { ImageUp, Wand2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Flexbox } from 'react-layout-kit';
 
 import { useGlobalStore } from '@/store/global';
 import { globalGeneralSelectors } from '@/store/global/selectors';
+import { imageToBase64 } from '@/utils/imageToBase64';
+import { createUploadImageHandler } from '@/utils/uploadFIle';
 
 const EmojiPicker = dynamic(() => import('@lobehub/ui/es/EmojiPicker'), { ssr: false });
 
@@ -25,6 +28,26 @@ const AutoGenerateAvatar = memo<AutoGenerateAvatarProps>(
     const { t } = useTranslation('common');
     const theme = useTheme();
     const locale = useGlobalStore(globalGeneralSelectors.currentLanguage);
+    const [uploading, setUploading] = React.useState(false);
+
+    const handleUploadAvatar = useCallback(
+      createUploadImageHandler(async (dataUrl) => {
+        try {
+          setUploading(true);
+          const img = new Image();
+          img.src = dataUrl;
+          await new Promise((resolve, reject) => {
+            img.addEventListener('load', resolve);
+            img.addEventListener('error', reject);
+          });
+          const webpBase64 = imageToBase64({ img, size: 256 });
+          onChange?.(webpBase64);
+        } finally {
+          setUploading(false);
+        }
+      }),
+      [onChange],
+    );
 
     return (
       <Flexbox
@@ -60,6 +83,15 @@ const AutoGenerateAvatar = memo<AutoGenerateAvatarProps>(
           size="small"
           title={!canAutoGenerate ? t('autoGenerateTooltipDisabled') : t('autoGenerate')}
         />
+        <Upload
+          accept="image/*"
+          beforeUpload={handleUploadAvatar}
+          itemRender={() => void 0}
+          maxCount={1}
+          showUploadList={false}
+        >
+          <ActionIcon icon={ImageUp} loading={uploading} size="small" title={t('uploadAvatar')} />
+        </Upload>
       </Flexbox>
     );
   },
