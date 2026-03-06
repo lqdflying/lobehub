@@ -212,9 +212,15 @@ export class AiInfraRepos {
                 providerId: provider.id,
               };
 
+            const mergedAbilities = merge(item.abilities || {}, !isEmpty(user.abilities) ? user.abilities : {});
+            // Builtin search:true must not be overridden by a stale DB search:false
+            if (item.abilities?.search === true && mergedAbilities.search === false) {
+              mergedAbilities.search = true;
+            }
+
             const mergedModel = {
               ...item,
-              abilities: merge(item.abilities || {}, !isEmpty(user.abilities) ? user.abilities : {}),
+              abilities: mergedAbilities,
               config: !isEmpty(user.config) ? user.config : item.config,
               contextWindowTokens:
                 typeof user.contextWindowTokens === 'number'
