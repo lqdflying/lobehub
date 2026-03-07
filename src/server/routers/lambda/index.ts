@@ -23,6 +23,7 @@ import { importerRouter } from './importer';
 import { knowledgeBaseRouter } from './knowledgeBase';
 import { marketRouter } from './market';
 import { messageRouter } from './message';
+import { picbedRouter } from './picbed';
 import { pluginRouter } from './plugin';
 import { ragEvalRouter } from './ragEval';
 import { sessionRouter } from './session';
@@ -54,6 +55,7 @@ export const lambdaRouter = router({
   knowledgeBase: knowledgeBaseRouter,
   market: marketRouter,
   message: messageRouter,
+  picbed: picbedRouter,
   plugin: pluginRouter,
   ragEval: ragEvalRouter,
   session: sessionRouter,
