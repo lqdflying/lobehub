@@ -346,7 +346,8 @@
     "files": "文件",
     "knowledgeBase": "知识库",
     "me": "我",
-    "setting": "设置"
+    "setting": "设置",
+    "tools": "工具"
   },
   "telemetry": {
     "allow": "允许",

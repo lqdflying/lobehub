@@ -39,6 +39,8 @@ export const config = {
     '/changelog(.*)',
     '/settings(.*)',
     '/image',
+    '/tools',
+    '/tools(.*)',
     '/knowledge',
     '/knowledge(.*)',
     '/profile(.*)',
