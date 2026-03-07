@@ -51,7 +51,6 @@ const PicbedWorkspace = memo(() => {
   const { styles, cx } = useStyles();
   const { t } = useTranslation('tools');
   const { message } = App.useApp();
-  const { isDragging, uploadFiles, uploading } = usePicbedUpload();
   const [images, setImages] = useState<ImageRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -65,6 +64,8 @@ const PicbedWorkspace = memo(() => {
       setLoading(false);
     }
   }, []);
+
+  const { isDragging, uploadFiles, uploading } = usePicbedUpload(loadImages);
 
   useEffect(() => {
     loadImages();

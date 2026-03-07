@@ -15,7 +15,7 @@ const getFilesFromDataTransferItems = async (items: DataTransferItem[]): Promise
   return files;
 };
 
-export const usePicbedUpload = () => {
+export const usePicbedUpload = (onSuccess?: () => void) => {
   const { t } = useTranslation('tools');
   const { message } = App.useApp();
   const [uploading, setUploading] = useState(false);
@@ -34,6 +34,7 @@ export const usePicbedUpload = () => {
         const urls = results.map((r) => r.url).join('\n');
         await navigator.clipboard.writeText(urls);
         message.success(t('picbed.uploadSuccessCopied'));
+        onSuccess?.();
         return results;
       } catch {
         message.error(t('picbed.uploadFailed'));
@@ -41,7 +42,7 @@ export const usePicbedUpload = () => {
         setUploading(false);
       }
     },
-    [message, t],
+    [message, onSuccess, t],
   );
 
   const handlePaste = useCallback(
