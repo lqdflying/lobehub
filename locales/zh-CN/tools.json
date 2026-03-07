@@ -1,0 +1,15 @@
+{
+  "picbed": {
+    "copy": "复制链接",
+    "copied": "已复制！",
+    "delete": "删除",
+    "deleteConfirm": "确认删除此图片？",
+    "dragTip": "拖放或粘贴图片到此处",
+    "empty": "还没有上传任何图片",
+    "title": "图床",
+    "upload": "点击或粘贴以上传",
+    "uploadSuccess": "上传成功",
+    "uploadFailed": "上传失败"
+  },
+  "title": "工具"
+}
