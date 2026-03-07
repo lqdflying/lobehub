@@ -31,6 +31,7 @@ class DiscoverService {
 
   // ============================== Assistant Market ==============================
   getAssistantCategories = async (params: CategoryListQuery = {}): Promise<CategoryItem[]> => {
+    await this.injectMPToken();
     const locale = globalHelpers.getCurrentLanguage();
     return lambdaClient.market.getAssistantCategories.query({
       ...params,
@@ -54,6 +55,7 @@ class DiscoverService {
   };
 
   getAssistantList = async (params: AssistantQueryParams = {}): Promise<AssistantListResponse> => {
+    await this.injectMPToken();
     const locale = globalHelpers.getCurrentLanguage();
     return lambdaClient.market.getAssistantList.query(
       {
@@ -69,6 +71,7 @@ class DiscoverService {
   // ============================== MCP Market ==============================
 
   getMcpCategories = async (params: CategoryListQuery = {}): Promise<CategoryItem[]> => {
+    await this.injectMPToken();
     const locale = globalHelpers.getCurrentLanguage();
     return lambdaClient.market.getMcpCategories.query({
       ...params,
@@ -89,6 +92,7 @@ class DiscoverService {
   };
 
   getMcpList = async (params: McpQueryParams = {}): Promise<McpListResponse> => {
+    await this.injectMPToken();
     const locale = globalHelpers.getCurrentLanguage();
     return lambdaClient.market.getMcpList.query({
       ...params,
@@ -186,6 +190,7 @@ class DiscoverService {
   // ============================== Models ==============================
 
   getModelCategories = async (params: CategoryListQuery = {}): Promise<CategoryItem[]> => {
+    await this.injectMPToken();
     return lambdaClient.market.getModelCategories.query(params);
   };
 
@@ -205,6 +210,7 @@ class DiscoverService {
   };
 
   getModelList = async (params: ModelQueryParams = {}): Promise<ModelListResponse> => {
+    await this.injectMPToken();
     const locale = globalHelpers.getCurrentLanguage();
     return lambdaClient.market.getModelList.query({
       ...params,
@@ -217,6 +223,7 @@ class DiscoverService {
   // ============================== Plugin Market ==============================
 
   getPluginCategories = async (params: CategoryListQuery = {}): Promise<CategoryItem[]> => {
+    await this.injectMPToken();
     const locale = globalHelpers.getCurrentLanguage();
     return lambdaClient.market.getPluginCategories.query({
       ...params,
@@ -241,6 +248,7 @@ class DiscoverService {
   };
 
   getPluginList = async (params: PluginQueryParams = {}): Promise<PluginListResponse> => {
+    await this.injectMPToken();
     const locale = globalHelpers.getCurrentLanguage();
     return lambdaClient.market.getPluginList.query({
       ...params,
@@ -269,6 +277,7 @@ class DiscoverService {
   };
 
   getProviderList = async (params: ProviderQueryParams = {}): Promise<ProviderListResponse> => {
+    await this.injectMPToken();
     const locale = globalHelpers.getCurrentLanguage();
     return lambdaClient.market.getProviderList.query({
       ...params,
