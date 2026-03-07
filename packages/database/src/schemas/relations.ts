@@ -4,6 +4,7 @@ import { pgTable, primaryKey, text, uuid, varchar } from 'drizzle-orm/pg-core';
 
 import { createdAt } from './_helpers';
 import { agents, agentsFiles, agentsKnowledgeBases } from './agent';
+import { picbedImages } from './picbed';
 import { asyncTasks } from './asyncTask';
 import { chatGroups, chatGroupsAgents } from './chatGroup';
 import { documentChunks, documents } from './document';
@@ -295,6 +296,13 @@ export const chatGroupsRelations = relations(chatGroups, ({ many, one }) => ({
     references: [users.id],
   }),
   agents: many(chatGroupsAgents),
+}));
+
+export const picbedImagesRelations = relations(picbedImages, ({ one }) => ({
+  user: one(users, {
+    fields: [picbedImages.userId],
+    references: [users.id],
+  }),
 }));
 
 export const chatGroupsAgentsRelations = relations(chatGroupsAgents, ({ one }) => ({
