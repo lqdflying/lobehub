@@ -13,6 +13,7 @@ export enum SidebarTabKey {
   Image = 'image',
   Me = 'me',
   Setting = 'settings',
+  Tools = 'tools',
 }
 
 export enum ChatSettingsTabs {
