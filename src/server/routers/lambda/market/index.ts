@@ -96,7 +96,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getAssistantList(input);
       } catch (error) {
         log('Error fetching assistant list: %O', error);
-        return { currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
+        return { categories: [], currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
       }
     }),
 
@@ -185,7 +185,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getMcpList(input);
       } catch (error) {
         log('Error fetching mcp list: %O', error);
-        return { currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
+        return { categories: [], currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
       }
     }),
 
@@ -291,7 +291,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getModelList(input);
       } catch (error) {
         log('Error fetching model list: %O', error);
-        return { currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
+        return { categories: [], currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
       }
     }),
 
@@ -373,7 +373,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getPluginList(input);
       } catch (error) {
         log('Error fetching plugin list: %O', error);
-        return { currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
+        return { categories: [], currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
       }
     }),
 
@@ -434,7 +434,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getProviderList(input);
       } catch (error) {
         log('Error fetching provider list: %O', error);
-        return { currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
+        return { categories: [], currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
       }
     }),
 
