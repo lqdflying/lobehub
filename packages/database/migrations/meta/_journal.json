@@ -294,6 +294,13 @@
       "when": 1741622400000,
       "tag": "0041_add_picbed_images",
       "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1741708800000,
+      "tag": "0042_ensure_picbed_images",
+      "breakpoints": true
     }
   ],
   "version": "6"
