@@ -36,10 +36,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getAssistantCategories(input);
       } catch (error) {
         log('Error fetching assistant categories: %O', error);
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch assistant categories',
-        });
+        return [];
       }
     }),
 
@@ -99,10 +96,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getAssistantList(input);
       } catch (error) {
         log('Error fetching assistant list: %O', error);
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch assistant list',
-        });
+        return { currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
       }
     }),
 
@@ -144,10 +138,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getMcpCategories(input);
       } catch (error) {
         log('Error fetching mcp categories: %O', error);
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch mcp categories',
-        });
+        return [];
       }
     }),
 
@@ -194,10 +185,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getMcpList(input);
       } catch (error) {
         log('Error fetching mcp list: %O', error);
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch mcp list',
-        });
+        return { currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
       }
     }),
 
@@ -303,10 +291,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getModelList(input);
       } catch (error) {
         log('Error fetching model list: %O', error);
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch model list',
-        });
+        return { currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
       }
     }),
 
@@ -327,10 +312,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getPluginCategories(input);
       } catch (error) {
         log('Error fetching plugin categories: %O', error);
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch plugin categories',
-        });
+        return [];
       }
     }),
 
@@ -391,10 +373,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getPluginList(input);
       } catch (error) {
         log('Error fetching plugin list: %O', error);
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch plugin list',
-        });
+        return { currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
       }
     }),
 
@@ -455,10 +434,7 @@ export const marketRouter = router({
         return await ctx.discoverService.getProviderList(input);
       } catch (error) {
         log('Error fetching provider list: %O', error);
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch provider list',
-        });
+        return { currentPage: 1, items: [], pageSize: 20, totalCount: 0, totalPages: 0 };
       }
     }),
 
