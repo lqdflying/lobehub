@@ -303,7 +303,13 @@ class DiscoverService {
     const item = localStorage.getItem('_mpc');
     if (!item) {
       // 2. 如果没有，则注册客户端
-      const clientInfo = await this.registerClient();
+      let clientInfo: { clientId: string; clientSecret: string };
+      try {
+        clientInfo = await this.registerClient();
+      } catch (error) {
+        console.warn('Market client registration unavailable:', error);
+        return;
+      }
       clientId = clientInfo.clientId;
       clientSecret = clientInfo.clientSecret;
 
@@ -321,7 +327,13 @@ class DiscoverService {
       } catch (error) {
         console.error('Failed to decode client data:', error);
         // 如果解码失败，重新注册
-        const clientInfo = await this.registerClient();
+        let clientInfo: { clientId: string; clientSecret: string };
+        try {
+          clientInfo = await this.registerClient();
+        } catch (regError) {
+          console.warn('Market client re-registration unavailable:', regError);
+          return;
+        }
         clientId = clientInfo.clientId;
         clientSecret = clientInfo.clientSecret;
 
