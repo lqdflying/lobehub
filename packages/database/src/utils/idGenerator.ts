@@ -17,6 +17,7 @@ const prefixes = {
   memory: 'mem',
   messageGroups: 'mg',
   messages: 'msg',
+  picbedImages: 'pbi',
   plugins: 'plg',
   sessionGroups: 'sg',
   sessions: 'ssn',
