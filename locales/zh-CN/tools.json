@@ -9,6 +9,7 @@
     "title": "图床",
     "upload": "点击或粘贴以上传",
     "uploadSuccess": "上传成功",
+    "uploadSuccessCopied": "上传成功！链接已复制到剪贴板",
     "uploadFailed": "上传失败"
   },
   "title": "工具"

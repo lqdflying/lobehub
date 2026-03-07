@@ -31,7 +31,9 @@ export const usePicbedUpload = () => {
           const result = await picbedService.uploadImage(file);
           results.push(result);
         }
-        message.success(t('picbed.uploadSuccess'));
+        const urls = results.map((r) => r.url).join('\n');
+        await navigator.clipboard.writeText(urls);
+        message.success(t('picbed.uploadSuccessCopied'));
         return results;
       } catch {
         message.error(t('picbed.uploadFailed'));

@@ -9,6 +9,7 @@ export default {
     title: 'Picbed',
     upload: 'Click or paste to upload',
     uploadSuccess: 'Upload successful',
+    uploadSuccessCopied: 'Uploaded! URL copied to clipboard',
     uploadFailed: 'Upload failed',
   },
   title: 'Tools',
