@@ -244,9 +244,7 @@ class ChatService {
     // if the provider is Azure, get the deployment name as the request model
     const providersWithDeploymentName = [
       ModelProvider.Azure,
-      ModelProvider.Volcengine,
       ModelProvider.AzureAI,
-      ModelProvider.Qwen,
     ] as string[];
 
     if (providersWithDeploymentName.includes(provider)) {

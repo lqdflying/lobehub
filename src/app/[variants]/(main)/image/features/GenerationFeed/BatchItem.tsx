@@ -118,7 +118,6 @@ export const GenerationBatchItem = memo<GenerationBatchItemProps>(({ batch }) =>
     // Use unified InvalidAPIKey component for all providers (including ComfyUI)
     return (
       <InvalidAPIKey
-        bedrockDescription={t('bedrock.unlock.imageGenerationDescription', { ns: 'modelProvider' })}
         description={t('unlock.apiKey.imageGenerationDescription', {
           name: batch.provider,
           ns: 'error',

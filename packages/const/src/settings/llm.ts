@@ -1,13 +1,6 @@
 import { genUserLLMConfig } from './genUserLLMConfig';
 
 export const DEFAULT_LLM_CONFIG = genUserLLMConfig({
-  lmstudio: {
-    fetchOnClient: true,
-  },
-  ollama: {
-    enabled: true,
-    fetchOnClient: true,
-  },
   openai: {
     enabled: true,
   },

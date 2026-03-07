@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "exports": {
-    ".": "./src/index.ts",
-    "./vertexai": "./src/providers/vertexai/index.ts"
+    ".": "./src/index.ts"
   },
   "scripts": {
     "test": "vitest",
@@ -12,8 +11,6 @@
     "test:update": "vitest -u"
   },
   "dependencies": {
-    "@aws-sdk/client-bedrock-runtime": "^3.862.0",
-    "@huggingface/inference": "^4.11.3",
     "@lobechat/const": "workspace:*",
     "@lobechat/types": "workspace:*",
     "@lobechat/utils": "workspace:*",

@@ -158,7 +158,13 @@ export class AiInfraRepos {
       source: 'builtin',
     })) as AiProviderListItem[];
 
-    const mergedProviders = mergeArrayById(builtinProviders, userProviders);
+    // Only keep user DB entries that are still in the current builtin list, or are custom providers.
+    // This prevents old removed builtin providers from reappearing after a version upgrade.
+    const filteredUserProviders = userProviders.filter(
+      (p) => p.source === 'custom' || orderMap.has(p.id),
+    );
+
+    const mergedProviders = mergeArrayById(builtinProviders, filteredUserProviders);
 
     // 3. 根据 orderMap 排序
     return mergedProviders.sort((a, b) => {

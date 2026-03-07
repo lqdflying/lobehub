@@ -1,8 +1,6 @@
 import type { TracePayload } from '@lobechat/types';
 import { ClientOptions } from 'openai';
 
-import { LobeBedrockAIParams } from '../providers/bedrock';
-import { LobeCloudflareParams } from '../providers/cloudflare';
 import { LobeOpenAI } from '../providers/openai';
 import { providerRuntimeMap } from '../runtimeMap';
 import {
@@ -116,11 +114,7 @@ export class ModelRuntime {
    */
   static initializeWithProvider(
     provider: string,
-    params: Partial<
-      ClientOptions &
-        LobeBedrockAIParams &
-        LobeCloudflareParams & { apiKey?: string; apiVersion?: string; baseURL?: string }
-    >,
+    params: Partial<ClientOptions & { apiKey?: string; apiVersion?: string; baseURL?: string }>,
   ) {
     // @ts-expect-error runtime map not include vertex so it will be undefined
     const providerAI = providerRuntimeMap[provider] ?? LobeOpenAI;

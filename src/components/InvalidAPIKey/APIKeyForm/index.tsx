@@ -7,13 +7,10 @@ import { Center, Flexbox } from 'react-layout-kit';
 
 import { GlobalLLMProviderKey } from '@/types/user/settings';
 
-import BedrockForm from './Bedrock';
-import ComfyUIForm from './ComfyUIForm';
 import { LoadingContext } from './LoadingContext';
 import ProviderApiKeyForm from './ProviderApiKeyForm';
 
 interface APIKeyFormProps {
-  bedrockDescription: string;
   description: string;
   id: string;
   onClose: () => void;
@@ -22,7 +19,7 @@ interface APIKeyFormProps {
 }
 
 const APIKeyForm = memo<APIKeyFormProps>(
-  ({ provider, description, bedrockDescription, onRecreate, onClose }) => {
+  ({ provider, description, onRecreate, onClose }) => {
     const { t } = useTranslation('error');
     const [loading, setLoading] = useState(false);
 
@@ -30,34 +27,6 @@ const APIKeyForm = memo<APIKeyFormProps>(
       switch (provider) {
         case ModelProvider.Anthropic: {
           return 'sk-ant_*****************************';
-        }
-
-        case ModelProvider.OpenRouter: {
-          return 'sk-or-********************************';
-        }
-
-        case ModelProvider.Perplexity: {
-          return 'pplx-********************************';
-        }
-
-        case ModelProvider.ZhiPu: {
-          return '*********************.*************';
-        }
-
-        case ModelProvider.Groq: {
-          return 'gsk_*****************************';
-        }
-
-        case ModelProvider.DeepSeek: {
-          return 'sk_******************************';
-        }
-
-        case ModelProvider.Qwen: {
-          return 'sk-********************************';
-        }
-
-        case ModelProvider.Github: {
-          return 'ghp_*****************************';
         }
 
         default: {
@@ -71,23 +40,17 @@ const APIKeyForm = memo<APIKeyFormProps>(
         <Center
           gap={16}
           style={{
-            maxWidth: provider === ModelProvider.ComfyUI ? 900 : 300,
-            width: provider === ModelProvider.ComfyUI ? '80%' : 'auto',
+            maxWidth: 300,
+            width: 'auto',
           }}
         >
-          {provider === ModelProvider.Bedrock ? (
-            <BedrockForm description={bedrockDescription} />
-          ) : provider === ModelProvider.ComfyUI ? (
-            <ComfyUIForm description={description} />
-          ) : (
-            <ProviderApiKeyForm
-              apiKeyPlaceholder={apiKeyPlaceholder}
-              avatar={<ProviderIcon provider={provider} size={80} type={'avatar'} />}
-              description={description}
-              provider={provider as GlobalLLMProviderKey}
-              showEndpoint
-            />
-          )}
+          <ProviderApiKeyForm
+            apiKeyPlaceholder={apiKeyPlaceholder}
+            avatar={<ProviderIcon provider={provider} size={80} type={'avatar'} />}
+            description={description}
+            provider={provider as GlobalLLMProviderKey}
+            showEndpoint
+          />
           <Flexbox gap={12} width={'100%'}>
             <Button
               block

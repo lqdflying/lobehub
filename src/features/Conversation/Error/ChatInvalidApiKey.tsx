@@ -11,14 +11,12 @@ interface ChatInvalidAPIKeyProps {
   provider?: string;
 }
 const ChatInvalidAPIKey = memo<ChatInvalidAPIKeyProps>(({ id, provider }) => {
-  const { t } = useTranslation('modelProvider');
   const { t: modelProviderErrorT } = useTranslation(['modelProvider', 'error']);
   const [resend, deleteMessage] = useChatStore((s) => [s.regenerateMessage, s.deleteMessage]);
   const providerName = useProviderName(provider as GlobalLLMProviderKey);
 
   return (
     <InvalidAPIKey
-      bedrockDescription={t('bedrock.unlock.description')}
       description={modelProviderErrorT(`unlock.apiKey.description`, {
         name: providerName,
         ns: 'error',

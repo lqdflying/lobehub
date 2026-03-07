@@ -1,13 +1,5 @@
 import { LOBE_CHAT_AUTH_HEADER, isDeprecatedEdition } from '@lobechat/const';
-import {
-  AWSBedrockKeyVault,
-  AzureOpenAIKeyVault,
-  ClientSecretPayload,
-  CloudflareKeyVault,
-  ComfyUIKeyVault,
-  OpenAICompatibleKeyVault,
-  VertexAIKeyVault,
-} from '@lobechat/types';
+import { AzureOpenAIKeyVault, ClientSecretPayload, OpenAICompatibleKeyVault } from '@lobechat/types';
 import { clientApiKeyManager } from '@lobechat/utils/client';
 import { ModelProvider } from 'model-bank';
 
@@ -20,81 +12,16 @@ import { resolveRuntimeProvider } from './chat/helper';
 
 export const getProviderAuthPayload = (
   provider: string,
-  keyVaults: OpenAICompatibleKeyVault &
-    AzureOpenAIKeyVault &
-    AWSBedrockKeyVault &
-    CloudflareKeyVault &
-    ComfyUIKeyVault &
-    VertexAIKeyVault,
+  keyVaults: OpenAICompatibleKeyVault & AzureOpenAIKeyVault,
 ) => {
   switch (provider) {
-    case ModelProvider.Bedrock: {
-      const { accessKeyId, region, secretAccessKey, sessionToken } = keyVaults;
-
-      const awsSecretAccessKey = secretAccessKey;
-      const awsAccessKeyId = accessKeyId;
-
-      const apiKey = (awsSecretAccessKey || '') + (awsAccessKeyId || '');
-
-      return {
-        accessKeyId,
-        accessKeySecret: awsSecretAccessKey,
-        apiKey,
-        /** @deprecated */
-        awsAccessKeyId,
-        /** @deprecated */
-        awsRegion: region,
-        /** @deprecated */
-        awsSecretAccessKey,
-        /** @deprecated */
-        awsSessionToken: sessionToken,
-        region,
-        sessionToken,
-      };
-    }
-
     case ModelProvider.Azure: {
       return {
         apiKey: clientApiKeyManager.pick(keyVaults.apiKey),
-
         apiVersion: keyVaults.apiVersion,
         /** @deprecated */
         azureApiVersion: keyVaults.apiVersion,
         baseURL: keyVaults.baseURL || keyVaults.endpoint,
-      };
-    }
-
-    case ModelProvider.Ollama: {
-      return { baseURL: keyVaults?.baseURL };
-    }
-
-    case ModelProvider.Cloudflare: {
-      return {
-        apiKey: clientApiKeyManager.pick(keyVaults?.apiKey),
-
-        baseURLOrAccountID: keyVaults?.baseURLOrAccountID,
-        /** @deprecated */
-        cloudflareBaseURLOrAccountID: keyVaults?.baseURLOrAccountID,
-      };
-    }
-
-    case ModelProvider.ComfyUI: {
-      return {
-        apiKey: keyVaults?.apiKey,
-        authType: keyVaults?.authType,
-        baseURL: keyVaults?.baseURL,
-        customHeaders: keyVaults?.customHeaders,
-        password: keyVaults?.password,
-        username: keyVaults?.username,
-      };
-    }
-
-    case ModelProvider.VertexAI: {
-      // Vertex AI uses JSON credentials, should not split by comma
-      return {
-        apiKey: keyVaults?.apiKey,
-        baseURL: keyVaults?.baseURL,
-        vertexAIRegion: keyVaults?.region,
       };
     }
 

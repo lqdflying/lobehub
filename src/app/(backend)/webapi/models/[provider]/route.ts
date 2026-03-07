@@ -1,23 +1,17 @@
 import { ChatCompletionErrorPayload } from '@lobechat/model-runtime';
 import { ChatErrorType } from '@lobechat/types';
-import { ModelProvider } from 'model-bank';
 import { NextResponse } from 'next/server';
 
 import { checkAuth } from '@/app/(backend)/middleware/auth';
 import { initModelRuntimeWithUserPayload } from '@/server/modules/ModelRuntime';
 import { createErrorResponse } from '@/utils/errorResponse';
 
-const noNeedAPIKey = (provider: string) => [ModelProvider.OpenRouter].includes(provider as any);
-
 export const GET = checkAuth(async (req, { params, jwtPayload }) => {
   const { provider } = await params;
 
   try {
-    const hasDefaultApiKey = jwtPayload.apiKey || 'dont-need-api-key-for-model-list';
-
     const agentRuntime = await initModelRuntimeWithUserPayload(provider, {
       ...jwtPayload,
-      apiKey: noNeedAPIKey(provider) ? hasDefaultApiKey : jwtPayload.apiKey,
     });
 
     const list = await agentRuntime.models();

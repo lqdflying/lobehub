@@ -3,7 +3,6 @@ import { ChatErrorType, ChatMessageError, ErrorType, UIChatMessage } from '@lobe
 import { IPluginErrorType } from '@lobehub/chat-plugin-sdk';
 import type { AlertProps } from '@lobehub/ui';
 import { Skeleton } from 'antd';
-import dynamic from 'next/dynamic';
 import { Suspense, memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -14,15 +13,6 @@ import ClerkLogin from './ClerkLogin';
 import ErrorJsonViewer from './ErrorJsonViewer';
 import InvalidAccessCode from './InvalidAccessCode';
 import { ErrorActionContainer } from './style';
-
-const loading = () => <Skeleton active />;
-
-const OllamaBizError = dynamic(() => import('./OllamaBizError'), { loading, ssr: false });
-
-const OllamaSetupGuide = dynamic(() => import('@/features/OllamaSetupGuide'), {
-  loading,
-  ssr: false,
-});
 
 // Config for the errorMessage display
 const getErrorAlertConfig = (
@@ -53,10 +43,7 @@ const getErrorAlertConfig = (
       };
     }
 
-    case AgentRuntimeErrorType.OllamaServiceUnavailable:
-    case AgentRuntimeErrorType.NoOpenAIAPIKey:
-    case AgentRuntimeErrorType.ComfyUIServiceUnavailable:
-    case AgentRuntimeErrorType.InvalidComfyUIArgs: {
+    case AgentRuntimeErrorType.NoOpenAIAPIKey: {
       return {
         extraDefaultExpand: true,
         extraIsolate: true,
@@ -92,14 +79,6 @@ const ErrorMessageExtra = memo<{ data: UIChatMessage }>(({ data }) => {
   if (!error?.type) return;
 
   switch (error.type) {
-    case AgentRuntimeErrorType.OllamaServiceUnavailable: {
-      return <OllamaSetupGuide id={data.id} />;
-    }
-
-    case AgentRuntimeErrorType.OllamaBizError: {
-      return <OllamaBizError {...data} />;
-    }
-
     /* ↓ cloud slot ↓ */
 
     /* ↑ cloud slot ↑ */

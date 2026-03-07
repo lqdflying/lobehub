@@ -1,5 +1,4 @@
 import { enableNextAuth } from '@/const/auth';
-import { isDesktop } from '@/const/version';
 import { appEnv, getAppConfig } from '@/envs/app';
 import { authEnv } from '@/envs/auth';
 import { fileEnv } from '@/envs/file';
@@ -24,37 +23,9 @@ export const getServerGlobalConfig = async () => {
         enabledKey: 'ENABLED_AZURE_OPENAI',
         withDeploymentName: true,
       },
-      bedrock: {
-        enabledKey: 'ENABLED_AWS_BEDROCK',
-        modelListKey: 'AWS_BEDROCK_MODEL_LIST',
-      },
-      giteeai: {
-        enabledKey: 'ENABLED_GITEE_AI',
-        modelListKey: 'GITEE_AI_MODEL_LIST',
-      },
-      lmstudio: {
-        fetchOnClient: isDesktop ? false : undefined,
-      },
       /* ↓ cloud slot ↓ */
 
       /* ↑ cloud slot ↑ */
-      ollama: {
-        enabled: isDesktop ? true : undefined,
-        fetchOnClient: isDesktop ? false : !process.env.OLLAMA_PROXY_URL,
-      },
-      ollamacloud: {
-        enabledKey: 'ENABLED_OLLAMA_CLOUD',
-      },
-      qwen: {
-        withDeploymentName: true,
-      },
-      tencentcloud: {
-        enabledKey: 'ENABLED_TENCENT_CLOUD',
-        modelListKey: 'TENCENT_CLOUD_MODEL_LIST',
-      },
-      volcengine: {
-        withDeploymentName: true,
-      },
     }),
     defaultAgent: {
       config: parseAgentConfig(DEFAULT_AGENT_CONFIG),
@@ -73,17 +44,6 @@ export const getServerGlobalConfig = async () => {
       azure: {
         enabledKey: 'ENABLED_AZURE_OPENAI',
         withDeploymentName: true,
-      },
-      bedrock: {
-        enabledKey: 'ENABLED_AWS_BEDROCK',
-        modelListKey: 'AWS_BEDROCK_MODEL_LIST',
-      },
-      giteeai: {
-        enabledKey: 'ENABLED_GITEE_AI',
-        modelListKey: 'GITEE_AI_MODEL_LIST',
-      },
-      ollama: {
-        fetchOnClient: !process.env.OLLAMA_PROXY_URL,
       },
     }),
     oAuthSSOProviders: authEnv.NEXT_AUTH_SSO_PROVIDERS.trim().split(/[,，]/),
