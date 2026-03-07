@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@lobehub/ui';
-import { Images } from 'lucide-react';
+import { Images, KeyRound } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,11 @@ const Nav = memo(() => {
       icon: <Icon icon={Images} />,
       key: 'picbed',
       label: t('picbed.title'),
+    },
+    {
+      icon: <Icon icon={KeyRound} />,
+      key: 'password',
+      label: t('password.title'),
     },
   ];
 
