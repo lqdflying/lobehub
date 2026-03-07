@@ -1,8 +1,9 @@
 'use client';
 
 import { ActionIcon } from '@lobehub/ui';
-import { App, Input, Tooltip } from 'antd';
+import { App, Input, Tooltip, Typography } from 'antd';
 import { createStyles } from 'antd-style';
+import dayjs from 'dayjs';
 import { Check, Copy, Trash2 } from 'lucide-react';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,14 +17,19 @@ const useStyles = createStyles(({ css, token }) => ({
     background: ${token.colorBgContainer};
   `,
   footer: css`
-    padding: 8px 12px;
-    gap: 8px;
+    padding: 6px 10px;
+    gap: 6px;
   `,
   image: css`
     width: 100%;
-    height: 160px;
+    height: 112px;
     object-fit: cover;
     display: block;
+  `,
+  timestamp: css`
+    padding: 0 10px 4px;
+    font-size: 11px;
+    color: ${token.colorTextTertiary};
   `,
   urlInput: css`
     flex: 1;
@@ -32,13 +38,14 @@ const useStyles = createStyles(({ css, token }) => ({
 }));
 
 interface ImageCardProps {
+  createdAt: Date;
   id: string;
   name: string;
   onDelete: (id: string) => void;
   url: string;
 }
 
-const ImageCard = memo<ImageCardProps>(({ id, name, url, onDelete }) => {
+const ImageCard = memo<ImageCardProps>(({ id, name, url, createdAt, onDelete }) => {
   const { styles } = useStyles();
   const { t } = useTranslation('tools');
   const { message } = App.useApp();
@@ -60,17 +67,20 @@ const ImageCard = memo<ImageCardProps>(({ id, name, url, onDelete }) => {
           <ActionIcon
             icon={copied ? Check : Copy}
             onClick={handleCopy}
-            size={{ blockSize: 28, size: 14 }}
+            size={{ blockSize: 26, size: 13 }}
           />
         </Tooltip>
         <Tooltip title={t('picbed.delete')}>
           <ActionIcon
             icon={Trash2}
             onClick={() => onDelete(id)}
-            size={{ blockSize: 28, size: 14 }}
+            size={{ blockSize: 26, size: 13 }}
           />
         </Tooltip>
       </Flexbox>
+      <Typography.Text className={styles.timestamp}>
+        {dayjs(createdAt).format('MMM DD YYYY HH:mm')}
+      </Typography.Text>
     </Flexbox>
   );
 });

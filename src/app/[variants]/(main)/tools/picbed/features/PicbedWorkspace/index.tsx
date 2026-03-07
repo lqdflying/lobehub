@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@lobehub/ui';
-import { App, Empty, Spin, Typography, Upload } from 'antd';
+import { App, Empty, Pagination, Spin, Typography, Upload } from 'antd';
 import { createStyles } from 'antd-style';
 import { ImageUp } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
@@ -30,8 +30,8 @@ const useStyles = createStyles(({ css, token }) => ({
   `,
   grid: css`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
+    gap: 12px;
   `,
   title: css`
     margin-bottom: 0 !important;
@@ -54,6 +54,8 @@ const PicbedWorkspace = memo(() => {
   const { isDragging, uploadFiles, uploading } = usePicbedUpload();
   const [images, setImages] = useState<ImageRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 20;
 
   const loadImages = useCallback(async () => {
     try {
@@ -70,8 +72,13 @@ const PicbedWorkspace = memo(() => {
 
   const handleUpload = async (files: File[]) => {
     const results = await uploadFiles(files);
-    if (results) loadImages();
+    if (results) {
+      setPage(1);
+      loadImages();
+    }
   };
+
+  const pagedImages = images.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const handleDelete = async (id: string) => {
     await picbedService.delete(id);
@@ -114,17 +121,32 @@ const PicbedWorkspace = memo(() => {
       ) : images.length === 0 ? (
         <Empty description={t('picbed.empty')} />
       ) : (
-        <div className={styles.grid}>
-          {images.map((img) => (
-            <ImageCard
-              id={img.id}
-              key={img.id}
-              name={img.name}
-              onDelete={handleDelete}
-              url={img.url}
-            />
-          ))}
-        </div>
+        <>
+          <div className={styles.grid}>
+            {pagedImages.map((img) => (
+              <ImageCard
+                createdAt={img.createdAt}
+                id={img.id}
+                key={img.id}
+                name={img.name}
+                onDelete={handleDelete}
+                url={img.url}
+              />
+            ))}
+          </div>
+          {images.length > PAGE_SIZE && (
+            <Flexbox align={'center'}>
+              <Pagination
+                current={page}
+                onChange={setPage}
+                pageSize={PAGE_SIZE}
+                showSizeChanger={false}
+                showTotal={(total) => `${total} images`}
+                total={images.length}
+              />
+            </Flexbox>
+          )}
+        </>
       )}
     </Flexbox>
   );
