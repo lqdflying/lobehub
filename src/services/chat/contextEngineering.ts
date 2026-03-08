@@ -19,10 +19,42 @@ import { OpenAIChatMessage, UIChatMessage } from '@lobechat/types';
 import { VARIABLE_GENERATORS } from '@lobechat/utils/client';
 
 import { isCanUseFC } from '@/helpers/isCanUseFC';
+import { lambdaClient } from '@/libs/trpc/client';
 import { getToolStoreState } from '@/store/tool';
 import { toolSelectors } from '@/store/tool/selectors';
 
 import { isCanUseVideo, isCanUseVision } from './helper';
+
+const WEBAPI_FILES_PREFIX = '/webapi/files/';
+
+/**
+ * After MCP tool calls, refreshMessages() re-fetches messages from the server using
+ * getUIFileUrl(), which returns auth-required /webapi/files/<key> proxy URLs instead of
+ * the original S3 public URLs. AI providers cannot access these proxy URLs.
+ * This function resolves them back to public S3 URLs via tRPC before the pipeline runs.
+ */
+const resolveProxyImageUrls = async (messages: UIChatMessage[]): Promise<UIChatMessage[]> => {
+  const hasProxyUrls = messages.some((m) =>
+    (m as any).imageList?.some((img: any) => img.url?.includes(WEBAPI_FILES_PREFIX)),
+  );
+  if (!hasProxyUrls) return messages;
+
+  return Promise.all(
+    messages.map(async (message) => {
+      const imageList: any[] = (message as any).imageList;
+      if (!imageList?.some((img) => img.url?.includes(WEBAPI_FILES_PREFIX))) return message;
+
+      const resolvedImageList = await Promise.all(
+        imageList.map(async (img) => {
+          if (!img.url?.includes(WEBAPI_FILES_PREFIX)) return img;
+          const resolvedUrl = await lambdaClient.file.resolvePublicUrl.query({ url: img.url });
+          return { ...img, url: resolvedUrl };
+        }),
+      );
+      return { ...message, imageList: resolvedImageList } as UIChatMessage;
+    }),
+  );
+};
 
 interface ContextEngineeringContext {
   enableHistoryCount?: boolean;
@@ -121,7 +153,8 @@ export const contextEngineering = async ({
     ],
   });
 
-  const result = await pipeline.process({ messages });
+  const resolvedMessages = await resolveProxyImageUrls(messages);
+  const result = await pipeline.process({ messages: resolvedMessages });
 
   return result.messages;
 };

@@ -185,6 +185,18 @@ export const fileRouter = router({
       // remove from S3
       await ctx.fileService.deleteFiles(needToRemoveFileList.map((file) => file.url!));
     }),
+
+  // Resolve a /webapi/files/<key> proxy URL back to the public S3 URL.
+  // Used client-side after refreshMessages() replaces S3 URLs with auth-proxy URLs post-MCP call.
+  resolvePublicUrl: fileProcedure
+    .input(z.object({ url: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const PREFIX = '/webapi/files/';
+      const idx = input.url.indexOf(PREFIX);
+      if (idx === -1) return input.url;
+      const key = input.url.slice(idx + PREFIX.length);
+      return ctx.fileService.getFullFileUrl(key);
+    }),
 });
 
 export type FileRouter = typeof fileRouter;

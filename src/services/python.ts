@@ -20,7 +20,7 @@ class PythonService {
 
     const resultFiles = await interpreter.downloadFiles();
     return {
-      files: resultFiles.map((file) => ({
+      files: resultFiles.map((file: any) => ({
         data: file,
         filename: file.name,
         previewUrl: URL.createObjectURL(file),
