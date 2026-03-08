@@ -46,6 +46,13 @@ const nextConfig: NextConfig = {
     // so we need to disable it
     // refs: https://github.com/lobehub/lobe-chat/pull/7430
     serverMinification: false,
+    // Cache dynamic route RSC payloads client-side so section switches are instant after first visit.
+    // Next.js 15 changed the default for dynamic routes from 30s → 0s, causing a server roundtrip
+    // on every navigation between sections (Chat, Tools, Discover, etc.).
+    staleTimes: {
+      dynamic: 30,
+      static: 300,
+    },
     webVitalsAttribution: ['CLS', 'LCP'],
     webpackBuildWorker: true,
     webpackMemoryOptimizations: true,
