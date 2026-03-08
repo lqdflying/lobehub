@@ -6,9 +6,7 @@ import {
 import { ChatErrorType } from '@lobechat/types';
 
 import { checkAuth } from '@/app/(backend)/middleware/auth';
-import { getServerDB } from '@/database/core/db-adaptor';
 import { createTraceOptions, initModelRuntimeWithUserPayload } from '@/server/modules/ModelRuntime';
-import { FileService } from '@/server/services/file';
 import { ChatStreamPayload } from '@/types/openai/chat';
 import { createErrorResponse } from '@/utils/errorResponse';
 import { getTracePayload } from '@/utils/trace';
@@ -20,34 +18,49 @@ const WEBAPI_FILES_PREFIX = '/webapi/files/';
  * S3 public URLs (via S3_PUBLIC_DOMAIN or presigned URL). The proxy endpoint
  * requires auth, so external AI providers (OpenAI, Anthropic server-side fetch)
  * cannot access those URLs directly.
+ *
+ * Uses dynamic imports to avoid bundling pg/fs into Edge Runtime builds.
+ * Silently skips if the DB is unavailable (e.g. Edge Runtime).
  */
 const resolveImageUrls = async (
   data: ChatStreamPayload,
-  fileService: FileService,
+  userId: string,
 ): Promise<ChatStreamPayload> => {
-  const messages = await Promise.all(
-    data.messages.map(async (message) => {
-      if (!Array.isArray(message.content)) return message;
+  try {
+    const [{ getServerDB }, { FileService }] = await Promise.all([
+      import('@/database/core/db-adaptor'),
+      import('@/server/services/file'),
+    ]);
+    const serverDB = await getServerDB();
+    const fileService = new FileService(serverDB, userId);
 
-      const content = await Promise.all(
-        (message.content as any[]).map(async (part) => {
-          const url: string | undefined = part?.image_url?.url;
-          if (part?.type === 'image_url' && url?.includes(WEBAPI_FILES_PREFIX)) {
-            const key = url.slice(url.indexOf(WEBAPI_FILES_PREFIX) + WEBAPI_FILES_PREFIX.length);
-            return {
-              ...part,
-              image_url: { ...part.image_url, url: await fileService.getFullFileUrl(key) },
-            };
-          }
-          return part;
-        }),
-      );
+    const messages = await Promise.all(
+      data.messages.map(async (message) => {
+        if (!Array.isArray(message.content)) return message;
 
-      return { ...message, content };
-    }),
-  );
+        const content = await Promise.all(
+          (message.content as any[]).map(async (part) => {
+            const url: string | undefined = part?.image_url?.url;
+            if (part?.type === 'image_url' && url?.includes(WEBAPI_FILES_PREFIX)) {
+              const key = url.slice(url.indexOf(WEBAPI_FILES_PREFIX) + WEBAPI_FILES_PREFIX.length);
+              return {
+                ...part,
+                image_url: { ...part.image_url, url: await fileService.getFullFileUrl(key) },
+              };
+            }
+            return part;
+          }),
+        );
 
-  return { ...data, messages };
+        return { ...message, content };
+      }),
+    );
+
+    return { ...data, messages };
+  } catch {
+    // DB not available (Edge Runtime) — return payload unchanged
+    return data;
+  }
 };
 
 export const maxDuration = 300;
@@ -71,9 +84,7 @@ export const POST = checkAuth(async (req: Request, { params, jwtPayload, createR
     // Translate /webapi/files/ proxy URLs to real S3 public URLs so that
     // external AI providers can fetch images directly.
     if (jwtPayload.userId) {
-      const serverDB = await getServerDB();
-      const fileService = new FileService(serverDB, jwtPayload.userId);
-      data = await resolveImageUrls(data, fileService);
+      data = await resolveImageUrls(data, jwtPayload.userId);
     }
 
     const tracePayload = getTracePayload(req);
