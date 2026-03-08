@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@lobehub/ui';
-import { App, Empty, Pagination, Spin, Typography, Upload } from 'antd';
+import { App, Empty, Image, Pagination, Spin, Typography, Upload } from 'antd';
 import { createStyles } from 'antd-style';
 import { ImageUp } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
@@ -123,18 +123,20 @@ const PicbedWorkspace = memo(() => {
         <Empty description={t('picbed.empty')} />
       ) : (
         <>
-          <div className={styles.grid}>
-            {pagedImages.map((img) => (
-              <ImageCard
-                createdAt={img.createdAt}
-                id={img.id}
-                key={img.id}
-                name={img.name}
-                onDelete={handleDelete}
-                url={img.url}
-              />
-            ))}
-          </div>
+          <Image.PreviewGroup>
+            <div className={styles.grid}>
+              {pagedImages.map((img) => (
+                <ImageCard
+                  createdAt={img.createdAt}
+                  id={img.id}
+                  key={img.id}
+                  name={img.name}
+                  onDelete={handleDelete}
+                  url={img.url}
+                />
+              ))}
+            </div>
+          </Image.PreviewGroup>
           {images.length > PAGE_SIZE && (
             <Flexbox align={'center'}>
               <Pagination

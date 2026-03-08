@@ -1,7 +1,7 @@
 'use client';
 
 import { ActionIcon } from '@lobehub/ui';
-import { App, Input, Tooltip, Typography } from 'antd';
+import { App, Image, Input, Tooltip, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import dayjs from 'dayjs';
 import { Check, Copy, Trash2 } from 'lucide-react';
@@ -25,6 +25,7 @@ const useStyles = createStyles(({ css, token }) => ({
     height: 112px;
     object-fit: cover;
     display: block;
+    cursor: zoom-in;
   `,
   timestamp: css`
     padding: 0 10px 4px;
@@ -60,7 +61,13 @@ const ImageCard = memo<ImageCardProps>(({ id, name, url, createdAt, onDelete }) 
 
   return (
     <Flexbox className={styles.card}>
-      <img alt={name} className={styles.image} src={url} />
+      <Image
+        alt={name}
+        className={styles.image}
+        preview={{ src: url }}
+        src={url}
+        wrapperStyle={{ display: 'block' }}
+      />
       <Flexbox align={'center'} className={styles.footer} horizontal>
         <Input className={styles.urlInput} readOnly size={'small'} value={url} />
         <Tooltip title={t('picbed.copy')}>
