@@ -8,20 +8,22 @@ LobeHub is a private distribution of LobeChat tailored for self-hosted server de
 
 ## What's Different from Upstream LobeChat
 
-| Area | Upstream LobeChat | LobeHub |
-|------|------------------|---------|
-| Deployment target | Vercel / Docker / Desktop | Docker + PostgreSQL only |
-| Versioning | v1.x | v3.x (independent) |
-| Model bank | Upstream releases | Extended: Claude 4.x, GPT-5.x, Gemini 3.x |
-| Tools Hub | Not present | Built-in (Picbed + extensible sidebar) |
-| Picbed | Not present | Image hosting with S3, auto URL copy |
-| Changelog page | Enabled | Disabled (skips external fetch at build time) |
+| Area              | Upstream LobeChat         | LobeHub                                            |
+| ----------------- | ------------------------- | -------------------------------------------------- |
+| Deployment target | Vercel / Docker / Desktop | Docker + PostgreSQL only                           |
+| Versioning        | v1.x                      | v3.x (independent)                                 |
+| Model bank        | Upstream releases         | Extended: Claude 4.x, GPT-5.x, Gemini 3.x          |
+| Tools Hub         | Not present               | Built-in (Picbed, API Tester + extensible sidebar) |
+| Picbed            | Not present               | Image hosting with S3, auto URL copy               |
+| API Tester        | Not present               | Browser-based REST API client at `/tools/apitest`  |
+| Changelog page    | Enabled                   | Disabled (skips external fetch at build time)      |
 
 ---
 
 ## Features
 
 ### Core (inherited from LobeChat)
+
 - Multi-model chat — OpenAI, Anthropic, Google, Ollama, and 40+ providers
 - Knowledge base with RAG (file upload, chunking, vector search)
 - MCP plugin system with one-click installation
@@ -32,12 +34,19 @@ LobeHub is a private distribution of LobeChat tailored for self-hosted server de
 - Real-time search integration
 
 ### LobeHub Additions
+
 - **Tools Hub** — a dedicated left-sidebar section (Wrench icon) for utility tools, with its own sub-navigation panel
 - **Picbed** — image hosting tool at `/tools/picbed`:
   - Upload via paste, drag-and-drop, or file select
   - Auto-copies URL to clipboard on upload
   - Paginated grid view (20 per page) with timestamps
   - S3-backed storage
+- **API Tester** — REST API client at `/tools/apitest`:
+  - All HTTP methods (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS)
+  - Auth: None / Bearer Token / Basic Auth
+  - Request headers editor, body editor with JSON formatter
+  - Response viewer with status code, timing, pretty-printed JSON, raw toggle
+  - Stateless — no database required
 - **Extended model bank** — latest Claude (4.5, 4.6, Opus), GPT-5.x series, Gemini 3.x, realtime and image models with accurate pricing
 
 ---
@@ -62,7 +71,7 @@ services:
       # ANTHROPIC_API_KEY=...
       # S3_ACCESS_KEY_ID=... (required for Picbed)
     ports:
-      - "3210:3210"
+      - '3210:3210'
 
   lobe-db:
     image: postgres:16
@@ -73,7 +82,7 @@ services:
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d postgres"]
+      test: ['CMD-SHELL', 'pg_isready -U user -d postgres']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -95,14 +104,14 @@ Database migrations run automatically on container startup. No manual setup requ
 If your DB was bootstrapped outside the migration system (`drizzle_migrations` table missing but tables already exist), seed the tracking table so future migrations apply correctly:
 
 ```bash
-docker exec -it lobe-db psql -U <user> -d <db> -c "
+docker exec -it lobe-db psql -U "
 CREATE TABLE IF NOT EXISTS drizzle_migrations (
   id SERIAL PRIMARY KEY, hash text NOT NULL, created_at bigint
 );
 INSERT INTO drizzle_migrations (hash, created_at) VALUES
 ('0000_init',1),('0001_add_client_id',2),('0002_amusing_puma',3),
 -- ... insert all tags through the latest migration
-ON CONFLICT DO NOTHING;"
+ON CONFLICT DO NOTHING;" < user > -d < db > -c
 ```
 
 ---
@@ -135,9 +144,9 @@ bun run type-check
 bun run lint
 
 # Database (requires DATABASE_URL env var)
-bun run db:generate   # generate migration SQL from schema changes
-bun run db:migrate    # apply migrations locally
-bun run db:studio     # open Drizzle Studio
+bun run db:generate # generate migration SQL from schema changes
+bun run db:migrate  # apply migrations locally
+bun run db:studio   # open Drizzle Studio
 ```
 
 ---
