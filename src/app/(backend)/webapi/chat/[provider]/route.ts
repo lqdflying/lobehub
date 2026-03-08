@@ -6,10 +6,49 @@ import {
 import { ChatErrorType } from '@lobechat/types';
 
 import { checkAuth } from '@/app/(backend)/middleware/auth';
+import { getServerDB } from '@/database/core/db-adaptor';
 import { createTraceOptions, initModelRuntimeWithUserPayload } from '@/server/modules/ModelRuntime';
+import { FileService } from '@/server/services/file';
 import { ChatStreamPayload } from '@/types/openai/chat';
 import { createErrorResponse } from '@/utils/errorResponse';
 import { getTracePayload } from '@/utils/trace';
+
+const WEBAPI_FILES_PREFIX = '/webapi/files/';
+
+/**
+ * Translate /webapi/files/<key> proxy URLs in image_url content parts to real
+ * S3 public URLs (via S3_PUBLIC_DOMAIN or presigned URL). The proxy endpoint
+ * requires auth, so external AI providers (OpenAI, Anthropic server-side fetch)
+ * cannot access those URLs directly.
+ */
+const resolveImageUrls = async (
+  data: ChatStreamPayload,
+  fileService: FileService,
+): Promise<ChatStreamPayload> => {
+  const messages = await Promise.all(
+    data.messages.map(async (message) => {
+      if (!Array.isArray(message.content)) return message;
+
+      const content = await Promise.all(
+        (message.content as any[]).map(async (part) => {
+          const url: string | undefined = part?.image_url?.url;
+          if (part?.type === 'image_url' && url?.includes(WEBAPI_FILES_PREFIX)) {
+            const key = url.slice(url.indexOf(WEBAPI_FILES_PREFIX) + WEBAPI_FILES_PREFIX.length);
+            return {
+              ...part,
+              image_url: { ...part.image_url, url: await fileService.getFullFileUrl(key) },
+            };
+          }
+          return part;
+        }),
+      );
+
+      return { ...message, content };
+    }),
+  );
+
+  return { ...data, messages };
+};
 
 export const maxDuration = 300;
 
@@ -27,7 +66,15 @@ export const POST = checkAuth(async (req: Request, { params, jwtPayload, createR
 
     // ============  2. create chat completion   ============ //
 
-    const data = (await req.json()) as ChatStreamPayload;
+    let data = (await req.json()) as ChatStreamPayload;
+
+    // Translate /webapi/files/ proxy URLs to real S3 public URLs so that
+    // external AI providers can fetch images directly.
+    if (jwtPayload.userId) {
+      const serverDB = await getServerDB();
+      const fileService = new FileService(serverDB, jwtPayload.userId);
+      data = await resolveImageUrls(data, fileService);
+    }
 
     const tracePayload = getTracePayload(req);
 
