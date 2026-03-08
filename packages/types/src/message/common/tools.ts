@@ -16,6 +16,8 @@ export interface ChatToolPayload {
   arguments: string;
   id: string;
   identifier: string;
+  /** Thought signature for Google Gemini thinking models — required for history replay */
+  thoughtSignature?: string;
   type: LobeToolRenderType;
 }
 
@@ -67,6 +69,12 @@ export interface MessageToolCall {
    * The ID of the tool call.
    */
   id: string;
+
+  /**
+   * Optional thought signature for Google Gemini thinking models.
+   * Required when sending function call history back to the API.
+   */
+  thoughtSignature?: string;
 
   /**
    * The type of the tool. Currently, only `function` is supported.

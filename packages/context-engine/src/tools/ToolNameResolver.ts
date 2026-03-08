@@ -82,6 +82,7 @@ export class ToolNameResolver {
           arguments: toolCall.function.arguments,
           id: toolCall.id,
           identifier,
+          ...((toolCall as any).thoughtSignature && { thoughtSignature: (toolCall as any).thoughtSignature }),
           type: (type ?? 'default') as any,
         };
 
