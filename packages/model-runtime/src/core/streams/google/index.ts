@@ -74,19 +74,21 @@ const transformGoogleGenerativeAIStream = (
     }
   }
 
-  const functionCalls = chunk.functionCalls;
+  // Use raw parts to capture thoughtSignature (required for Google thinking models)
+  const functionCallParts = candidate?.content?.parts?.filter((p) => p.functionCall);
 
-  if (functionCalls) {
+  if (functionCallParts && functionCallParts.length > 0) {
     return [
       {
-        data: functionCalls.map(
-          (value, index): StreamToolCallChunkData => ({
+        data: functionCallParts.map(
+          (part, index): StreamToolCallChunkData => ({
             function: {
-              arguments: JSON.stringify(value.args),
-              name: value.name,
+              arguments: JSON.stringify(part.functionCall!.args),
+              name: part.functionCall!.name,
             },
-            id: generateToolCallId(index, value.name),
+            id: generateToolCallId(index, part.functionCall!.name),
             index: index,
+            ...(part.thoughtSignature && { thoughtSignature: part.thoughtSignature }),
             type: 'function',
           }),
         ),

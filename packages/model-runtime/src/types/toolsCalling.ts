@@ -31,6 +31,12 @@ export interface MessageToolCall {
   id: string;
 
   /**
+   * Optional thought signature for Google Gemini thinking models.
+   * Required when sending function call history back to the API.
+   */
+  thoughtSignature?: string;
+
+  /**
    * The type of the tool. Currently, only `function` is supported.
    */
   type: 'function' | string;
@@ -42,6 +48,7 @@ export const MessageToolCallSchema = z.object({
     name: z.string(),
   }),
   id: z.string(),
+  thoughtSignature: z.string().optional(),
   type: z.string(),
 });
 

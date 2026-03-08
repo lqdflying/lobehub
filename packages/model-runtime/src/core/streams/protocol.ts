@@ -98,6 +98,8 @@ export interface StreamToolCallChunkData {
   };
   id?: string;
   index: number;
+  /** Thought signature from Google Gemini thinking models, required for history replay */
+  thoughtSignature?: string;
   type: 'function' | string;
 }
 

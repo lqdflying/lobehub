@@ -19,6 +19,10 @@ export const parseToolCalls = (origin: MessageToolCall[], value: MessageToolCall
         if (item.function?.arguments) {
           draft[index].function.arguments += item.function.arguments;
         }
+        // preserve thoughtSignature if not yet set (Google thinking models)
+        if ((item as any).thoughtSignature && !draft[index].thoughtSignature) {
+          draft[index].thoughtSignature = (item as any).thoughtSignature;
+        }
       }
     });
   });

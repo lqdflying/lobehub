@@ -95,6 +95,8 @@ export const buildGoogleMessage = async (
           args: safeParseJSON(tool.function.arguments)!,
           name: tool.function.name,
         },
+        // Include thoughtSignature for Google thinking models — required for history replay
+        ...((tool as any).thoughtSignature && { thoughtSignature: (tool as any).thoughtSignature }),
       })),
       role: 'model',
     };
