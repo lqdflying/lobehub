@@ -105,8 +105,24 @@ const useStyles = createStyles(({ css, token }) => ({
       border-block-end: none;
     }
   `,
+  responseHeaderKey: css`
+    min-width: 200px;
+    font-family: ${token.fontFamilyCode};
+    font-size: 12px;
+  `,
+  responseHeaderValue: css`
+    font-family: ${token.fontFamilyCode};
+    font-size: 12px;
+    word-break: break-all;
+  `,
   statusBar: css`
     font-size: 13px;
+  `,
+  statusTag: css`
+    padding-block: 2px;
+    padding-inline: 10px;
+    font-size: 13px;
+    font-weight: 600;
   `,
   textarea: css`
     resize: vertical;
@@ -125,12 +141,12 @@ const useStyles = createStyles(({ css, token }) => ({
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-const StatusTag = ({ status }: { status: number }) => {
+const StatusTag = ({ status, className }: { className?: string; status: number }) => {
   if (status === 0) return null;
   const color =
-    status >= 500 ? 'error' : status >= 400 ? 'error' : status >= 300 ? 'warning' : 'success';
+    status >= 200 && status < 300 ? 'success' : status >= 300 && status < 400 ? 'warning' : 'error';
   return (
-    <Tag color={color} style={{ fontSize: 13, fontWeight: 600, padding: '2px 10px' }}>
+    <Tag className={className} color={color}>
       {status}
     </Tag>
   );
@@ -461,17 +477,10 @@ const ApitestWorkspace = memo(() => {
         <Flexbox gap={4} style={{ padding: '16px 0' }}>
           {Object.entries(response?.headers ?? {}).map(([k, v]) => (
             <Flexbox className={styles.responseHeaderItem} gap={8} horizontal key={k}>
-              <Typography.Text
-                strong
-                style={{ fontFamily: 'monospace', fontSize: 12, minWidth: 200 }}
-              >
+              <Typography.Text className={styles.responseHeaderKey} strong>
                 {k}
               </Typography.Text>
-              <Typography.Text
-                style={{ fontFamily: 'monospace', fontSize: 12, wordBreak: 'break-all' }}
-              >
-                {v}
-              </Typography.Text>
+              <Typography.Text className={styles.responseHeaderValue}>{v}</Typography.Text>
             </Flexbox>
           ))}
         </Flexbox>
@@ -526,7 +535,7 @@ const ApitestWorkspace = memo(() => {
         <Flexbox className={styles.card} gap={0}>
           {/* Status bar */}
           <Flexbox align={'center'} className={styles.statusBar} gap={16} horizontal>
-            <StatusTag status={response.status} />
+            <StatusTag className={styles.statusTag} status={response.status} />
             {response.status > 0 && (
               <Typography.Text type={'secondary'}>{response.statusText}</Typography.Text>
             )}
