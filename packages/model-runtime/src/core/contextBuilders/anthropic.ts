@@ -5,6 +5,18 @@ import OpenAI from 'openai';
 import { OpenAIChatMessage, UserMessageContentPart } from '../../types';
 import { parseDataUri } from '../../utils/uriParser';
 
+const ANTHROPIC_SUPPORTED_IMAGE_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/webp',
+]);
+
+const normalizeAnthropicMimeType = (mimeType: string | null | undefined): string => {
+  if (mimeType && ANTHROPIC_SUPPORTED_IMAGE_TYPES.has(mimeType)) return mimeType;
+  return 'image/jpeg';
+};
+
 export const buildAnthropicBlock = async (
   content: UserMessageContentPart,
 ): Promise<Anthropic.ContentBlock | Anthropic.ImageBlockParam | undefined> => {
@@ -27,7 +39,7 @@ export const buildAnthropicBlock = async (
         return {
           source: {
             data: base64 as string,
-            media_type: mimeType as Anthropic.Base64ImageSource['media_type'],
+            media_type: normalizeAnthropicMimeType(mimeType) as Anthropic.Base64ImageSource['media_type'],
             type: 'base64',
           },
           type: 'image',
@@ -38,7 +50,7 @@ export const buildAnthropicBlock = async (
         return {
           source: {
             data: base64 as string,
-            media_type: mimeType as Anthropic.Base64ImageSource['media_type'],
+            media_type: normalizeAnthropicMimeType(mimeType) as Anthropic.Base64ImageSource['media_type'],
             type: 'base64',
           },
           type: 'image',

@@ -61,7 +61,11 @@ export const imageUrlToBase64 = async (
           new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''),
         );
 
-    return { base64, mimeType: blob.type };
+    // Prefer Content-Type response header over blob.type (blob.type can be empty for S3 objects)
+    const mimeType =
+      res.headers.get('content-type')?.split(';')[0].trim() || blob.type || 'image/jpeg';
+
+    return { base64, mimeType };
   } catch (error) {
     console.error('Error converting image to base64:', error);
     throw error;
