@@ -11,6 +11,7 @@
     "emptyUrl": "请输入 URL",
     "formatError": "无效的 JSON，无法格式化",
     "formatJson": "格式化 JSON",
+    "formatted": "格式化",
     "headerKey": "键",
     "headerValue": "值",
     "headers": "请求头",
@@ -31,19 +32,6 @@
     "url": "URL",
     "username": "用户名"
   },
-  "picbed": {
-    "copy": "复制链接",
-    "copied": "已复制！",
-    "delete": "删除",
-    "deleteConfirm": "确认删除此图片？",
-    "dragTip": "拖放或粘贴图片到此处",
-    "empty": "还没有上传任何图片",
-    "title": "图床",
-    "upload": "点击或粘贴以上传",
-    "uploadSuccess": "上传成功",
-    "uploadSuccessCopied": "上传成功！链接已复制到剪贴板",
-    "uploadFailed": "上传失败"
-  },
   "password": {
     "charsets": "字符集",
     "copied": "已复制！",
@@ -59,6 +47,19 @@
     "symbols": "符号",
     "title": "密码生成器",
     "uppercase": "大写字母"
+  },
+  "picbed": {
+    "copy": "复制链接",
+    "copied": "已复制！",
+    "delete": "删除",
+    "deleteConfirm": "确认删除此图片？",
+    "dragTip": "拖放或粘贴图片到此处",
+    "empty": "还没有上传任何图片",
+    "title": "图床",
+    "upload": "点击或粘贴以上传",
+    "uploadSuccess": "上传成功",
+    "uploadSuccessCopied": "上传成功！链接已复制到剪贴板",
+    "uploadFailed": "上传失败"
   },
   "title": "工具"
 }
